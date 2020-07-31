@@ -1,37 +1,51 @@
 import {Router} from './lib/Router'
 import {Session} from './lib/Session'
+import {Record} from './lib/Record'
+import {DB} from './lib/DB'
+import {I18n} from './lib/I18n'
+
+import {User} from './models/User'
+import {Group} from './models/Group'
 
 import {Login} from './pages/Login'
 import {Home} from './pages/Home'
+import {Crud} from './pages/Crud'
 
 import {Sidebar} from './components/layout/Sidebar'
 import {Header} from './components/layout/Header'
+import {Aside} from './components/layout/Aside'
 
+DB.init()
+I18n.init('pt_br')
 
 tag app-root
 	def build
 		state =
-			sidebar:
-				toggled: false
-			background: "url('/img/bg/1.jpg')"
+			aside: {}
+			sidebar: {}
+			theme: 1
 
-
-		router = Router.new(self)
+		router = Router.new()
 		session = Session.new()
 
 	def mount
 		await router.go('/login') unless session.isLoggedIn()
 
-	<self .app [background-image: {state.background}]>
+	def themeBg
+		"url('/img/bg/{state.theme}.jpg')"
+
+	<self .app [background-image: {themeBg()}]>
 		<.main>
 			if router.current == '/login'
-				<Login> 
+				<Login>
 			else
 				<Header>
 				<Sidebar state=state.sidebar>
-
+				<Aside state=state.aside>
 				<section .content>
 					<Home> if router.current == '/'
+					<Crud model=User> if router.current == '/users'
+
 
 	css .app
 		position: absolute
@@ -44,6 +58,7 @@ tag app-root
 		background-repeat: no-repeat
 		background-attachment: fixed
 		background-size: 100% 100%
+		transition: background .3s;
 
 	css .main
 		position: relative

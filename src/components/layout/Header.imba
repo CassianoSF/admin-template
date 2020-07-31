@@ -1,13 +1,24 @@
+import {Messages} from '../header/Messages'
+import {Notifications} from '../header/Notifications'
+import {Apps} from '../header/Apps'
+
 export tag Header
+	prop open
+	
 	def mount
 		minimized_sidebar = no
-		window.addEventListener('scroll', do render())
+		document.addEventListener('scroll', render.bind(this))
+		document.addEventListener('keyup', escape.bind(this))
+		document.addEventListener('pointerup', closeDropdown.bind(this))
 
 	def unmount
 		window.removeEventListener('scroll', do render())
 
 	def toggleSidebar
 		$context.state.sidebar.toggled = !$context.state.sidebar.toggled
+
+	def toggleAside
+		$context.state.aside.toggled = !$context.state.aside.toggled
 
 	def toggleSearch
 		search_toggled = !search_toggled
@@ -21,6 +32,20 @@ export tag Header
 		if search_toggled
 			search_toggled = false
 
+	def escape e
+		toggle() if e.key == 'Escape'
+
+	def closeDropdown e
+		for el in e.path
+			for clazz in el.classList
+				return if clazz == 'top-nav-item'
+		open = null
+		imba.commit!
+
+	def toggle item
+		open = item == open ? null : item
+		imba.commit!
+
 	<self>
 		<header .header .header--scrolled=(window.scrollY)>
 			<.navigation-trigger .hidden-xl-up @click.toggleSidebar>
@@ -32,21 +57,28 @@ export tag Header
 					search_input = <input @focus.focusSearch @blur.blurSearch type="text" .search__text placeholder="Search for people, files, documents...">
 					<i .zmdi .search__helper .zmdi-search=!search_focus .zmdi-long-arrow-right=search_focus>
 			<ul .top-nav>
-				<li .hidden-xl-up>
+				<li .top-nav-item .hidden-xl-up>
 					<a :pointerup.toggleSearch>
 						<i .zmdi .zmdi-search>
-				<li .dropdown>
-					<a data-toggle="dropdown" .top-nav__notify>
+
+				<li .top-nav-item :pointerup.toggle('messages') .dropdown.top-nav__notifications>
+					<a .top-nav__notify=(false)>
 						<i .zmdi .zmdi-email>
-				<li .dropdown>
-					<a data-toggle="dropdown" .top-nav__notify>
-						<i .zmdi .zmdi-email>
-				<li .dropdown>
-					<a data-toggle="dropdown" .top-nav__notify>
-						<i .zmdi .zmdi-email>
-				<li .dropdown>
-					<a data-toggle="dropdown" .top-nav__notify>
-						<i .zmdi .zmdi-email>
+					<Messages .header-dropdown> if open == 'messages'
+
+				<li .top-nav-item :pointerup.toggle('notifications') .dropdown.top-nav__notifications>
+					<a.top-nav__notify>
+						<i.zmdi.zmdi-notifications>
+					<Notifications .header-dropdown> if open == 'notifications'
+
+				<li .top-nav-item :pointerup.toggle('apps') .dropdown.hidden-xs-down>
+					<a>
+						<i.zmdi.zmdi-apps>
+					<Apps .header-dropdown> if open == 'apps'
+
+				<li :pointerup.toggleAside .hidden-xs-down>
+					<a.top-nav__themes>
+						<i.zmdi.zmdi-palette>
 
 	css .header
 		position: fixed 
@@ -131,7 +163,7 @@ export tag Header
 		transition: background-color .3s, color .3s
 		color: rgba(255, 255, 255) 
 		@lg
-			background-color: rgba(255, 255, 255, .08) @focus: rgba(255, 255, 255, .2)
+			background-color: rgba(255, 255, 255, .08) @focus: rgba(0, 0, 0, .85)
 			color: rgba(255, 255, 255, .85) @placeholder: rgba(255, 255, 255, .85)
 
 	css .search
@@ -170,3 +202,28 @@ export tag Header
 
 	css .search--toggled
 		background-color: rgba(0, 0, 0, .96)
+
+	css .top-nav__notify@before
+		content: ''
+		width: 5px
+		height: 5px
+		background-color: #fff
+		color: #fff
+		border-radius: 50%
+		position: absolute
+		top: -3px
+		right: 0
+		left: 0
+		margin: auto
+		-webkit-animation-name: flash
+		animation-name: flash
+		-webkit-animation-duration: 2s
+		animation-duration: 2s
+		-webkit-animation-fill-mode: both
+		animation-fill-mode: both
+		-webkit-animation-iteration-count: infinite
+		animation-iteration-count: infinite
+
+	css .header-dropdown
+		display: block
+		transform@sm: translate(-269px, 0px)

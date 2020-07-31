@@ -1,118 +1,95 @@
 export tag Sidebar
-	def mount 
-		menuItems = [
+	prop menu_items = [
 			{ 
-				urls: ['/dashboard', '', '/']
-				redirect: :dashboard
+				url: '/'
 				icon: "zmdi-chart"
 				title: " Dashboard"
 			},{ 
-				urls: ['/visao-geral']
-				redirect: "visao-geral"
+				url: '/users'
+				icon: "zmdi-accounts"
+				title: " Users"
+				acesso: :users
+			},{ 
+				url: '/visao-geral'
 				icon: "zmdi-view-dashboard"
 				title: " Visão geral"
 				acesso: :visao_geral
-			},{ 
-				urls: ['/analises']
-				redirect: :analises
-				icon: "zmdi-format-list-bulleted"
-				title: " Análises"
-				acesso: :analises
 			},{
-				urls: ['/cadastros']
-				redirect: :cadastros
+				url: '/cadastros'
 				icon: "zmdi-view-headline"
 				title: " Cadastros"
 				open: no
 				sub_menus: [
 					{ 
-						urls: ['/propriedades']
-						redirect: :propriedades
+						url: '/propriedades'
 						icon: "zmdi-home"
 						title: " Propriedades"
 						acesso: :locais
 					},{ 
-						urls: ['/animais']
-						redirect: :animais
-						image: 
-							src:"/common/fonts/cow2.svg" 
-							size: 20
-						title: " Animais"
-						acesso: :animais
-					},{ 
-						urls: ['/empresas']
-						redirect: :empresas
+						url: '/empresas'
 						icon: "zmdi-city"
 						title: " Empresas e Unidades"
 						acesso: :empresas
 					},{ 
-						urls: ['/silos']
-						redirect: :silos
+						url: '/silos'
 						icon: "zmdi-panorama-vertical"
 						title: " Silos"
 						acesso: :silos
 					},{ 
-						urls: ['/rotas']
-						redirect: :rotas
+						url: '/rotas'
 						icon: "zmdi-navigation"
 						title: " Linhas"
 						acesso: :linhas
 					}
 				]
 			},{
-				urls: ['/administrativo']
-				redirect: :administrativo
+				url: '/administrativo'
 				icon: "zmdi-view-headline"
 				title: " Administrativo"
 				open: no
 				sub_menus: [
 					{ 
-						urls: ['/milkspecs']
-						redirect: :milkspecs
+						url: '/milkspecs'
 						icon: "zmdi-usb"
 						title: " Milkspecs"
 						acesso: :maquinas
 					},{ 
-						urls: ['/racas']
-						redirect: :racas
-						image: 
-							src: "/common/fonts/cow.svg" 
-							size: 18
-						title: " Raças"
-						acesso: :racas
-					},{ 
-						urls: ['/origens']
-						redirect: :origens
+						url: '/origens'
 						icon: "zmdi-pin"
 						title: " Origens"
 						acesso: :origens
 					},{ 
-						urls: ['/usuarios']
-						redirect: :usuarios
+						url: '/usuarios'
 						icon: "zmdi-account-circle"
 						title: " Usuários"
 						acesso: :usuarios
 					},{ 
-						urls: ['/grupos']
-						redirect: :grupos
+						url: '/grupos'
 						icon: "zmdi-accounts"
 						title: " Grupos"
 						acesso: :grupos
 					},{ 
-						urls: ['/padroes']
-						redirect: :padroes
+						url: '/padroes'
 						icon: "zmdi-tune"
 						title: " Padrões de Qualidade"
 						acesso: :grupos
 					}
 				]
 			},{ 
-				urls: ['/relatorios']
-				redirect: :relatorios
+				url: '/relatorios'
 				icon: "zmdi-chart"
 				title: " Relatórios"
 			}, 
 		]
+
+	def mount
+		window.addEventListener('popstate') do |e|
+			for item in menu_items
+				let submenus = (item.sub_menus or []).map do |i| i.url
+				if submenus.includes($context.router.current)
+					item.open = true
+				else
+					item.open = false
 
 	def change_page page
 		$context.router.go(page)
@@ -121,8 +98,18 @@ export tag Sidebar
 		$context.session.logout()
 		$context.router.go('/login')
 
-	def is_selected item
-		item.urls.includes($context.router.current)
+	def isSelected item
+		item.url == $context.router.current
+
+	def close
+		state.toggled = false
+
+	def selectItem item
+		if item.sub_menus
+			item.open = !item.open
+			render()
+		else
+			change_page(item.url)
 
 	<self>
 		<div :pointerup.close .sa-backdrop> if state.toggled
@@ -142,18 +129,14 @@ export tag Sidebar
 								'Session.user:cargo'
 
 				<ul .navigation>
-					<li>
-						<a :pointerup.logout .dropdown-item>
-							<i .zmdi .zmdi-mail-reply>
-							"Sair"
-					for item in menuItems
+					for item in menu_items
 						<li .navigation_sub 
-							.navigation__active=(is_selected(item)) 
-							.navigation__sub--active=(is_selected(item)) 
+							.navigation__active=(isSelected(item)) 
+							.navigation__sub--active=(isSelected(item)) 
 							.nav-item__disabled=(item.disabled)
 							.nav-item__warning=(item.warning)
 						>
-							<a @pointerup.select_item(item)>
+							<a @pointerup.selectItem(item)>
 								if item.image
 									<img .zmdi src=item.image.src height=item.image.size style="margin-right: 10px;">
 								else
@@ -162,11 +145,10 @@ export tag Sidebar
 							if item.open
 								<ul .navigation .animated .fadeIn style="margin-left: 20px"> 
 									for sub_item in item.sub_menus
-										if podeVerMenu(sub_item.acesso) or !sub_item.acesso
-											<li @pointerup.select_item(sub_item) .navigation_sub .navigation__active=(is_selected(sub_item))>
-												<a> 
-													if sub_item.image
-														<img .zmdi src=sub_item.image.src height=sub_item.image.size style="margin-right: 10px;">
-													else
-														<i .zmdi .{sub_item.icon}>
-													sub_item.title
+										<li @pointerup.selectItem(sub_item) .navigation_sub .navigation__active=(isSelected(sub_item))>
+											<a> 
+												if sub_item.image
+													<img .zmdi src=sub_item.image.src height=sub_item.image.size style="margin-right: 10px;">
+												else
+													<i .zmdi .{sub_item.icon}>
+												sub_item.title

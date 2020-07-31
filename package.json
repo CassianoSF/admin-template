@@ -6,6 +6,7 @@
     "check-version": "imbac --version"
   },
   "dependencies": {
+    "dexie": "^3.0.1",
     "imba": "^2.0.0-alpha.69",
     "imba-rollup": "^2.0.0-alpha.57"
   },

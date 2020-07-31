@@ -152,6 +152,11 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
+dexie@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.0.1.tgz#faafeb94be0d5e18b25d700546a2c05725511cfc"
+  integrity sha512-/s4KzlaerQnCad/uY1ZNdFckTrbdMVhLlziYQzz62Ff9Ick1lHGomvTXNfwh4ApEZATyXRyVk5F6/y8UU84B0w==
+
 estree-walker@^0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.6.1.tgz#53049143f40c6eb918b23671d1fe3219f3a1b362"

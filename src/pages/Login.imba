@@ -3,13 +3,15 @@ export tag Login
 		loading = false
 
 	def login
-		$context.session.login(email, password)
+		loading = true
+		await $context.session.login(email, password)
+		loading = false
 		$context.router.go('/')
 
 	<self .login>
 		<div .login__block>
 			<div .login__block__header>
-				<a .nav-link target="_blank" href='/'>
+				<a .nav-link target="_blank" href='http://v2.imba.io'>
 					<img src="/img/logo.svg" height=50>
 
 			<div .login__block__body>
