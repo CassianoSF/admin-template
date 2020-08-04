@@ -9,16 +9,16 @@ export tag Header
 		minimized_sidebar = no
 		document.addEventListener('scroll', render.bind(this))
 		document.addEventListener('keyup', escape.bind(this))
-		document.addEventListener('pointerup', closeDropdown.bind(this))
+		document.addEventListener('click', closeDropdown.bind(this))
 
 	def unmount
 		window.removeEventListener('scroll', do render())
 
 	def toggleSidebar
-		$context.state.sidebar.toggled = !$context.state.sidebar.toggled
+		STATE.sidebar.toggled = !STATE.sidebar.toggled
 
 	def toggleAside
-		$context.state.aside.toggled = !$context.state.aside.toggled
+		STATE.aside.toggled = !STATE.aside.toggled
 
 	def toggleSearch
 		search_toggled = !search_toggled
@@ -58,25 +58,25 @@ export tag Header
 					<i .zmdi .search__helper .zmdi-search=!search_focus .zmdi-long-arrow-right=search_focus>
 			<ul .top-nav>
 				<li .top-nav-item .hidden-xl-up>
-					<a :pointerup.toggleSearch>
+					<a :click.toggleSearch>
 						<i .zmdi .zmdi-search>
 
-				<li .top-nav-item :pointerup.toggle('messages') .dropdown.top-nav__notifications>
+				<li .top-nav-item :click.toggle('messages') .dropdown.top-nav__notifications>
 					<a .top-nav__notify=(false)>
 						<i .zmdi .zmdi-email>
 					<Messages .header-dropdown> if open == 'messages'
 
-				<li .top-nav-item :pointerup.toggle('notifications') .dropdown.top-nav__notifications>
+				<li .top-nav-item :click.toggle('notifications') .dropdown.top-nav__notifications>
 					<a.top-nav__notify>
 						<i.zmdi.zmdi-notifications>
 					<Notifications .header-dropdown> if open == 'notifications'
 
-				<li .top-nav-item :pointerup.toggle('apps') .dropdown.hidden-xs-down>
+				<li .top-nav-item :click.toggle('apps') .dropdown.hidden-xs-down>
 					<a>
 						<i.zmdi.zmdi-apps>
 					<Apps .header-dropdown> if open == 'apps'
 
-				<li :pointerup.toggleAside .hidden-xs-down>
+				<li :click.toggleAside .hidden-xs-down>
 					<a.top-nav__themes>
 						<i.zmdi.zmdi-palette>
 

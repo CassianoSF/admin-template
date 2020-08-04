@@ -3,10 +3,19 @@ export tag Login
 		loading = false
 
 	def login
+		invalid = false
 		loading = true
-		await $context.session.login(email, password)
+		error = null
+		let res = await Api.login(email, password)
+		if res.data.error
+			error = res.data.error
+			STATE.alerts.push(type: 'error', msg: res.data.error)
+			invalid = true
+		else
+			window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
+			STATE.user = res.data.user
+			Router.go('/')
 		loading = false
-		$context.router.go('/')
 
 	<self .login>
 		<div .login__block>
@@ -17,10 +26,13 @@ export tag Login
 			<div .login__block__body>
 				<form>
 					<div .form-group>
-						<input bind=email @keypress.enter.login type="email" .form-control .text-center placeholder="User">
+						<input bind=email @keypress.enter.login .is-invalid=(invalid) .form-control .text-center type="email" placeholder="User" >
 
 					<div .form-group>
-						<input bind=password @keypress.enter.login type="password" .form-control .text-center placeholder="Password">
+						<input bind=password @keypress.enter.login .is-invalid=(invalid) .form-control .text-center type="password" placeholder="Password" >
+
+					if invalid
+						<p[color: #dc3545]> error
 
 				<a @click.login .btn .btn--icon .login__block__btn>
 					if loading

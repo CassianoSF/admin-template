@@ -1,11 +1,11 @@
-export class Router
-	prop current = window.location.pathname
+export global class Router
+	static prop current = window.location.pathname
 
-	def constructor
+	static def init
 		window.addEventListener('popstate') do |e|
 			current = e.state
 			imba.commit()
 
-	def go url
+	static def go url
 		current = url
-		window.history.pushState(url, url, url)
+		window.history.pushState("/#{url}", "/#{url}", "/#{url}")

@@ -1,14 +1,23 @@
 {
   "scripts": {
-    "build": "imba-rollup",
-    "start": "imba-rollup --watch --serve --hmr",
-    "dev": "imba-rollup --watch --serve --hmr",
-    "check-version": "imbac --version"
+    "start": "webpack-dev-server --hot --content-base ./public",
+    "dev": "webpack-dev-server --hot --content-base ./public",
+    "build": "webpack --mode=production",
+    "watch": "webpack --mode=development --watch --progress --colors --display-modules"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "dayjs": "^1.8.31",
     "dexie": "^3.0.1",
-    "imba": "^2.0.0-alpha.69",
-    "imba-rollup": "^2.0.0-alpha.57"
+    "dexie-relationships": "^1.2.11",
+    "flatpickr": "3.1.5",
+    "imba": "^2.0.0-alpha.74",
+    "imba-rollup": "^2.0.0-alpha.57",
+    "uuid": "^8.3.0",
+    "webpack": "^4.41.5",
+    "webpack-dev-server": "^3.8.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "webpack-cli": "^3.3.7"
+  }
 }

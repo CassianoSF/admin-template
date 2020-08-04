@@ -9,5 +9,3 @@ export global class Group < Record
 	}
 
 Group.setup()
-
-console.log Group.new

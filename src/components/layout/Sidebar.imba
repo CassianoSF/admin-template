@@ -1,19 +1,49 @@
 export tag Sidebar
 	prop menu_items = [
 			{ 
-				url: '/'
+				url: '/home'
 				icon: "zmdi-chart"
-				title: " Dashboard"
+				title: " Home"
 			},{ 
-				url: '/users'
-				icon: "zmdi-accounts"
-				title: " Users"
-				acesso: :users
-			},{ 
-				url: '/visao-geral'
+				url: '/producoes'
 				icon: "zmdi-view-dashboard"
-				title: " Visão geral"
-				acesso: :visao_geral
+				title: " Produções"
+			},{
+				url: '/processos'
+				icon: "zmdi-view-headline"
+				title: " Processos"
+				open: no
+				sub_menus: [
+					{ 
+						url: '/recebimento'
+						icon: "zmdi-view-dashboard"
+						title: " Recebimento"
+					},{ 
+						url: '/armazenamento'
+						icon: "zmdi-view-dashboard"
+						title: " Armazenamento"
+					},{ 
+						url: '/incubacao'
+						icon: "zmdi-view-dashboard"
+						title: " Incubação"
+					},{ 
+						url: '/transferencia'
+						icon: "zmdi-view-dashboard"
+						title: " Transferência"
+					},{ 
+						url: '/nascimento'
+						icon: "zmdi-view-dashboard"
+						title: " Nascimento"
+					},{ 
+						url: '/processamento'
+						icon: "zmdi-view-dashboard"
+						title: " Processamento"
+					},{ 
+						url: '/integracao'
+						icon: "zmdi-view-dashboard"
+						title: " Integração"
+					}
+				]
 			},{
 				url: '/cadastros'
 				icon: "zmdi-view-headline"
@@ -21,25 +51,25 @@ export tag Sidebar
 				open: no
 				sub_menus: [
 					{ 
-						url: '/propriedades'
+						url: '/lotes'
 						icon: "zmdi-home"
-						title: " Propriedades"
-						acesso: :locais
+						title: " Lotes"
 					},{ 
-						url: '/empresas'
+						url: '/nucleos-granjas'
+						icon: "zmdi-home"
+						title: " Núcleos e Granjas"
+					},{ 
+						url: '/incubadoras'
 						icon: "zmdi-city"
-						title: " Empresas e Unidades"
-						acesso: :empresas
+						title: " Incubadoras"
 					},{ 
-						url: '/silos'
+						url: '/nascedouros'
 						icon: "zmdi-panorama-vertical"
-						title: " Silos"
-						acesso: :silos
+						title: " Nascedouros"
 					},{ 
-						url: '/rotas'
-						icon: "zmdi-navigation"
-						title: " Linhas"
-						acesso: :linhas
+						url: '/linhagens'
+						icon: "zmdi-panorama-vertical"
+						title: " Linhagens"
 					}
 				]
 			},{
@@ -47,38 +77,28 @@ export tag Sidebar
 				icon: "zmdi-view-headline"
 				title: " Administrativo"
 				open: no
-				sub_menus: [
-					{ 
-						url: '/milkspecs'
-						icon: "zmdi-usb"
-						title: " Milkspecs"
-						acesso: :maquinas
-					},{ 
-						url: '/origens'
-						icon: "zmdi-pin"
-						title: " Origens"
-						acesso: :origens
-					},{ 
+				sub_menus: [{ 
 						url: '/usuarios'
 						icon: "zmdi-account-circle"
 						title: " Usuários"
-						acesso: :usuarios
 					},{ 
 						url: '/grupos'
 						icon: "zmdi-accounts"
 						title: " Grupos"
-						acesso: :grupos
 					},{ 
 						url: '/padroes'
 						icon: "zmdi-tune"
 						title: " Padrões de Qualidade"
-						acesso: :grupos
 					}
 				]
 			},{ 
-				url: '/relatorios'
+				url: '/atividade'
 				icon: "zmdi-chart"
-				title: " Relatórios"
+				title: " Atividade"
+			},{ 
+				url: '/'
+				icon: "zmdi-chart"
+				title: " Components"
 			}, 
 		]
 
@@ -86,23 +106,23 @@ export tag Sidebar
 		window.addEventListener('popstate') do |e|
 			for item in menu_items
 				let submenus = (item.sub_menus or []).map do |i| i.url
-				if submenus.includes($context.router.current)
+				if submenus.includes(Router.current)
 					item.open = true
 				else
 					item.open = false
 
 	def change_page page
-		$context.router.go(page)
+		Router.go(page)
 
 	def logout
-		$context.session.logout()
-		$context.router.go('/login')
+		Api.logout()
+		Router.go('/login')
 
 	def isSelected item
-		item.url == $context.router.current
+		item.url == Router.current
 
 	def close
-		state.toggled = false
+		STATE.sidebar.toggled = false
 
 	def selectItem item
 		if item.sub_menus
@@ -111,22 +131,39 @@ export tag Sidebar
 		else
 			change_page(item.url)
 
+	def toggleActions
+		actions = !actions
+
+	def profile
+		console.log 'profile'
+
+	def change_password
+		console.log 'change_password'
+
+	def logout
+		Api.logout()
+		Router.go('/login')
+
 	<self>
-		<div :pointerup.close .sa-backdrop> if state.toggled
-		<aside .sidebar .toggled=(state.toggled)>
+		<div :click.close .sa-backdrop> if STATE.sidebar.toggled
+		<aside .sidebar .toggled=(STATE.sidebar.toggled)>
 			<div .scrollbar-inner>
 
 				<div .user>
-					<div .user__info :pointerup.goToPerfil data-toggle="dropdown">
+					<div .user__info :click.toggleActions data-toggle="dropdown">
 						<div>
 							<div .user__name>
-								'Session.user:client'
+								STATE.user.username
 							<div .user__name>
-								'Session.user:nome'
-							<div .user__data>
-								'Session.user:email'
-							<div .user__data>
-								'Session.user:cargo'
+								STATE.user.email
+					if actions
+						<div[top: 65px] .dropdown-menu .show >
+							<a .dropdown-item @click.profile>
+								I18n.t.sidebar.profile
+							<a .dropdown-item @click.change_password>
+								I18n.t.sidebar.change_password
+							<a .dropdown-item @click.logout>
+								I18n.t.sidebar.logout
 
 				<ul .navigation>
 					for item in menu_items
@@ -136,7 +173,7 @@ export tag Sidebar
 							.nav-item__disabled=(item.disabled)
 							.nav-item__warning=(item.warning)
 						>
-							<a @pointerup.selectItem(item)>
+							<a @click.selectItem(item)>
 								if item.image
 									<img .zmdi src=item.image.src height=item.image.size style="margin-right: 10px;">
 								else
@@ -145,7 +182,7 @@ export tag Sidebar
 							if item.open
 								<ul .navigation .animated .fadeIn style="margin-left: 20px"> 
 									for sub_item in item.sub_menus
-										<li @pointerup.selectItem(sub_item) .navigation_sub .navigation__active=(isSelected(sub_item))>
+										<li @click.selectItem(sub_item) .navigation_sub .navigation__active=(isSelected(sub_item))>
 											<a> 
 												if sub_item.image
 													<img .zmdi src=sub_item.image.src height=sub_item.image.size style="margin-right: 10px;">

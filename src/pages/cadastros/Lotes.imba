@@ -1,13 +1,10 @@
 import Flatpickr from "flatpickr"
 import Dayjs from "dayjs"
-import {Select} from "../components/inputs/Select"
-import {Confirm} from "../components/ui/Confirm"
+import {Select} from "../../components/inputs/Select"
 
 
-export tag Crud
+export tag Lotes
 	prop records = []
-	prop relations = {}
-	prop model
 	prop target
 	prop confirm
 
@@ -16,12 +13,7 @@ export tag Crud
 		loadRecords()
 	
 	def loadRecords
-		records = await model.all()
-		relations = {}
-		if model.belongs_to
-			for own rel, meta of model.belongs_to
-				relations[rel] = await meta.type.all()
-
+		records = await Lote.all()
 		render
 
 	def addRecord
@@ -36,7 +28,6 @@ export tag Crud
 
 	def delete rec
 		confirm = rec
-		render()
 
 	def edit rec
 		target = rec
@@ -45,25 +36,20 @@ export tag Crud
 		confirm.delete()
 		let index = records.indexOf(confirm)
 		records.splice(index, 1)
-		confirm = null
-		STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success_destroy)
-		render()
+		confirm = undefined
 
 	def isRelation field
-		Object.keys(model.belongs_to).includes(field)
-
-	def confirmClose
-		confirm = false
+		Object.keys(Lote.belongs_to).includes(field)
 
 	<self .fadeIn .animated>
 		if confirm
-			<Confirm :submit.destroy :close.confirmClose message=I18n.t.pages.crud.confirm>
-		if target
-			<Form @close.closeForm model=model target=target relations=relations>
+			<button @click.destroy .btn .btn-danger> "Tem certeza"
+		elif target
+			<Form @close.closeForm model=model target=target>
 		else
 			<header .content__title>
 				<h1> 
-					I18n.t.models[model.table_name].plural_name
+					I18n.t.models[Lote.table_name].plural_name
 			<div .card .animated .fadeIn>
 				<div .card-body>
 					<div .table-responsive>
@@ -71,17 +57,17 @@ export tag Crud
 							if records.length
 								<table .table>
 									<thead>
-										for own field, meta of model.index
+										for own field, meta of Lote.index
 											if isRelation(field)
 												<th> I18n.t.models[meta.type.table_name].human_name
 											else
-												<th> I18n.t.models[model.table_name].fields[field]
+												<th> I18n.t.models[Lote.table_name].fields[field]
 										<th>
 										<th>
 									<tbody>
 										for rec in records
 											<tr .main_table_tr>
-												for own field, meta of model.index
+												for own field, meta of Lote.index
 													if isRelation(field)
 														<td @click.select(rec)> rec[field].main_field
 													else
@@ -100,7 +86,7 @@ export tag Crud
 							' Adicionar'
 
 
-tag Form
+tag LotesForm
 	prop errors = {}
 	prop loading
 	prop model
@@ -111,10 +97,7 @@ tag Form
 
 
 	def fieldName field
-		I18n.t.models[model.table_name].fields[field]
-
-	def relationName rel
-		I18n.t.models[rel.table_name].human_name
+		I18n.t.models[Lote.table_name].fields[field]
 
 	def close
 		emit :close
@@ -141,27 +124,23 @@ tag Form
 			})
 
 	def options relation
-		let test = for rec in relations[relation]
+		for rec in relations[relation]
 			{option: rec.main_field, value: rec.id}
-		test
 
 	def unmount
 		target = null
 		flatpickers.map do $1.destroy()
 
-	def changeSelect e
-		target[e.target.name] = relations[e.target.name].find(do |rel| rel.id == e.detail)
-
-	def changeInput e
-		target[e.target.name] = e.target.value
-		render()
+	def changeSelect payload, field
+		console.log
+		target[field] = relations[field].find(do |rel| rel.id == payload)
 
 	<self>
 		<header .content__title>
 			if target.id
-				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[model.table_name].human_name}"
+				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[Lote.table_name].human_name}"
 			else	
-				<h1> " {I18n.t.pages.crud['new']} {I18n.t.models[model.table_name].human_name}"
+				<h1> " {I18n.t.pages.crud['new']} {I18n.t.models[Lote.table_name].human_name}"
 		<div .card .animated .fadeIn>
 			<div .card-body>
 				<form>
@@ -172,24 +151,23 @@ tag Form
 									<p>
 										" • {fieldName(field)} {error[0]}"
 					<div .form-row>
-						for own field, meta of model.inputs
-							<div .col-md-4>
-								<div .form-group>
-									<label>
-										if meta.type.prototype instanceof Record
-											relationName(meta.type)
-										else
-											fieldName(field)
-									if meta.type.prototype instanceof Record
-										<Select value=(target[field] or {}).id name=field :change.changeSelect options=options(field) placeholder=I18n.t.select>
-									elif meta.type == :Date
-										date_pickers[field] = <input.form-control .form-control-lg>
-									else
-										<input value=(target[field] or '') :keyup.changeInput name=field type="text" .form-control .form-control-lg placeholder=fieldName(field)>
-
-									if errors[field]
-										<small .validation-error name="{field}-validation">
-											errors[field]
+						<div .col-md-4>
+							<div .form-group>
+								<label> "Ano"
+									<input bind=target[field] name=field type="text" .form-control .form-control-lg placeholder=fieldName(field)>
+								if errors.ano
+									<small .validation-error name="{field}-validation">
+										errors.ano
+						<div .col-md-4>
+							<div .form-group>
+								<label> "Granja"
+								<Select 
+									value=(target.granja or {}).id
+									:change=(do |e| changeSelect(e.detail, 'granja')) 
+									options=options('granja')>
+								if errors.granja
+									<small .validation-error name="{field}-validation">
+										errors.granja
 			<div .card-footer>
 				<div .btn-group .card-submit>
 					<button type="button" .btn .btn-danger :click.close>

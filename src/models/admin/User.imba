@@ -9,11 +9,10 @@ export global class User < Record
 	}
 
 	static prop inputs = {
-		name:  {type: :String}
-		email: {type: :String}
+		name:            {type: :String}
+		email:           {type: :String}
+		password:        {type: :String}
+		repeat_password: {type: :String}
 	}
 
-
 User.setup()
-
-console.log User.new
