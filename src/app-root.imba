@@ -1,5 +1,12 @@
 # LIBS
-import {Router}  from './lib/Router'
+import axios from 'axios'
+import dayjs from 'dayjs'
+import dexie from 'dexie'
+import dexie-relationships from 'dexie-relationships'
+import flatpickr from 'flatpickr'
+import uuid from 'uuid'
+# import {Router}  from './lib/Router'
+###
 import {Api}     from './lib/Api'
 import {Record}  from './lib/Record'
 import {DB}      from './lib/DB'

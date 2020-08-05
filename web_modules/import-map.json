@@ -1,8 +1,0 @@
-{
-  "imports": {
-    "dayjs": "./dayjs.js",
-    "dexie": "./dexie.js",
-    "imba": "./imba.js",
-    "uuid": "./uuid.js"
-  }
-}
