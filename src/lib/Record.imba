@@ -1,4 +1,4 @@
-import {v4} from 'uuid'
+import {v4} from "/web_modules/uuid"
 
 export global class Record
 

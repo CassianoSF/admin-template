@@ -7,14 +7,16 @@ export tag Login
 		loading = true
 		error = null
 		let res = await Api.login(email, password)
-		if res.data.error
-			error = res.data.error
-			STATE.alerts.push(type: 'error', msg: res.data.error)
-			invalid = true
-		else
-			window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
-			STATE.user = res.data.user
-			Router.go('/')
+		# if res.data.error
+		# 	error = res.data.error
+		# 	STATE.alerts.push(type: 'error', msg: res.data.error)
+		# 	invalid = true
+		# else
+		# 	window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
+		# 	STATE.user = res.data.user
+		STATE.user = {username: 'Username', email: 'user@email.com'}
+		Router.go('/')
+
 		loading = false
 
 	<self .login>

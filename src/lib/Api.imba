@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios from "/web_modules/axios"
 
 export global class Api
 	static prop headers

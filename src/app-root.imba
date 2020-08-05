@@ -1,12 +1,13 @@
 # LIBS
-import axios from 'axios'
-import dayjs from 'dayjs'
-import dexie from 'dexie'
-import dexie-relationships from 'dexie-relationships'
-import flatpickr from 'flatpickr'
-import uuid from 'uuid'
-# import {Router}  from './lib/Router'
-###
+
+import dayjs from '/web_modules/dayjs'
+import dexie from '/web_modules/dexie'
+import dexieRel from '/web_modules/dexie-relationships'
+import flatpickr from '/web_modules/flatpickr'
+import {v4} from '/web_modules/uuid'
+
+
+import {Router}  from './lib/Router'
 import {Api}     from './lib/Api'
 import {Record}  from './lib/Record'
 import {DB}      from './lib/DB'

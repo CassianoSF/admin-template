@@ -1,4 +1,4 @@
-import Dexie from 'dexie'
+import Dexie from "/web_modules/dexie"
 import relationships from 'dexie-relationships'
 
 export global class DB

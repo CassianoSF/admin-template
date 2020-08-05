@@ -1,5 +1,5 @@
-import Flatpickr from "flatpickr"
-import Dayjs from "dayjs"
+import Flatpickr from "/web_modules/flatpickr"
+import Dayjs from "/web_modules/dayjs"
 import {Select} from "../components/inputs/Select"
 import {Confirm} from "../components/ui/Confirm"
 

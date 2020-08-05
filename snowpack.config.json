@@ -7,7 +7,7 @@
     [
       "imba-snowpack",
       {
-        "entrypoints": ["app-root"]
+        "entrypoints": ["app-root", "imports"]
       }
     ]
   ],
