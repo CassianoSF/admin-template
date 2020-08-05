@@ -1,6 +1,8 @@
 export global class I18n
 	static prop pt_br = {
 		select: "Selecione"
+		validation_error:
+			not_null: " não pode estar vazio"
 		sidebar:
 			profile: "Perfil"
 			change_password: "Alterar Senha"

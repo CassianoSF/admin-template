@@ -42,6 +42,7 @@ import {Header}  from './components/layout/Header'
 import {Aside}   from './components/layout/Aside'
 import {Alerts}   from './components/ui/Alerts'
 
+
 global.STATE = {
 	alerts: []
 	aside: {}
@@ -81,10 +82,9 @@ tag app-root
 					<Crud model=Recebimento>   if Router.current == '/recebimento'
 					<Crud model=Transferencia> if Router.current == '/transferencia'
 
+					<Components>             if Router.current == '/'
 
-					<Components>       if Router.current == '/'
-
-					<Crud model=Lote>       if Router.current == '/lotes'
+					<Crud model=Lote>        if Router.current == '/lotes'
 					<Crud model=Nucleo>      if Router.current == '/nucleos-granjas'
 					<Crud model=Incubadora>  if Router.current == '/incubadoras'
 					<Crud model=Nascedouro>  if Router.current == '/nascedouros'

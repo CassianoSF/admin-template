@@ -33,6 +33,9 @@ export global class Record
 						rec[rel] = new meta.type rec[rel]
 				new self(rec)
 
+
+	prop errors
+
 	get fields
 		let own_fields = {}
 		for own k, v of constructor.fields
@@ -51,12 +54,36 @@ export global class Record
 		else
 			create()
 
+	def validate
+		errors = null
+		for own input, meta of constructor.inputs
+			console.log meta.type.prototype instanceof Record
+			if meta.type.prototype instanceof Record
+				if(not meta.null and (not self[input] or not self["{input}_id"]))
+					errors ||= {}
+					errors[input] =("{I18n.t.models[meta.type.table_name].human_name} {I18n.t.validation_error.not_null}")
+			else
+				if(not meta.null and not self[input])
+					errors ||= {}
+					errors[input] =("{I18n.t.models[constructor.table_name].fields[input]} {I18n.t.validation_error.not_null}")
+
+
 	def update
-		DB[constructor.table_name].update(self.id, fields)
+		validate()
+		if errors
+			return false
+		else
+			DB[constructor.table_name].update(self.id, fields)
+			return true
 
 	def create
 		self.id = v4()
-		DB[constructor.table_name].add(fields)
+		validate()
+		if errors
+			return false
+		else
+			DB[constructor.table_name].add(fields)
+			return true
 
 	def delete
 		DB[constructor.table_name].delete(self.id)

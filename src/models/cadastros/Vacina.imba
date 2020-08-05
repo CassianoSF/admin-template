@@ -9,7 +9,7 @@ export global class Vacina < Record
 	}
 
 	static prop inputs = {
-		codigo:                   {type: :String}
+		codigo:                   {type: :String, null: false}
 		descricao:                {type: :String}
 	}
 

@@ -4,14 +4,16 @@ export global class Nucleo < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
-		# granja:                   {type: Granja}
-
 		codigo:                   {type: :String}
 	}
 
+	static prop belongs_to = {
+		granja: {type: Granja}
+	}
+
 	static prop inputs = {
-		codigo:                   {type: :String}
+		codigo: {type: :String, null: false}
+		granja: {type: Granja, null: false}
 	}
 
 	static prop index = {

@@ -8,7 +8,7 @@ export global class Nascedouro < Record
 	}
 
 	static prop inputs = {
-		codigo:                   {type: :String}
+		codigo:                   {type: :String, null: false}
 	}
 
 	get main_field

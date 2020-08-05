@@ -4,12 +4,11 @@ export global class CarroInc < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		codigo:                   {type: :String}
 	}
 
 	static prop inputs = {
-		codigo:             {type: :String}
+		codigo: {type: :String, null: false}
 	}
 
 	get main_field

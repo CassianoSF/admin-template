@@ -13,12 +13,13 @@ export global class Lote < Record
 	}
 
 	static prop inputs = {
-		ano: {type: :String}
-		granja: {type: Granja}
-		nucleo: {type: Nucleo}
+		ano:    {type: :String, null: false}
+		granja: {type: Granja,  null: false}
+		nucleo: {type: Nucleo,  null: false}
 	}
 
 	static prop index = {
+		main_field: {type: :String}
 		ano: {type: :String}
 		granja: {type: Granja}
 		nucleo: {type: Nucleo}
@@ -26,5 +27,6 @@ export global class Lote < Record
 
 	get main_field
 		"{nucleo.codigo}-{granja.codigo}{ano}"
+
 
 Lote.setup()

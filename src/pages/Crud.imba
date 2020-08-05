@@ -21,8 +21,8 @@ export tag Crud
 		if model.belongs_to
 			for own rel, meta of model.belongs_to
 				relations[rel] = await meta.type.all()
-
 		render
+
 
 	def addRecord
 		target = new model
@@ -59,7 +59,7 @@ export tag Crud
 		if confirm
 			<Confirm :submit.destroy :close.confirmClose message=I18n.t.pages.crud.confirm>
 		if target
-			<Form @close.closeForm model=model target=target relations=relations>
+			<Form :close.closeForm model=model target=target relations=relations>
 		else
 			<header .content__title>
 				<h1> 
@@ -117,19 +117,25 @@ tag Form
 		I18n.t.models[rel.table_name].human_name
 
 	def close
-		emit :close
+		emit('close')
 
 	def submit
-		let save = await target.save()
-		if (save)
-			STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success)
-			close()
-		else
-			STATE.alerts.push(type: 'error', msg: I18n.t.pages.crud.error)
-			errors = target.errors
+		try
+			if (target.save())
+				STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success)
+				emit('close')
+			else
+				STATE.alerts.push(type: 'error', msg: I18n.t.pages.crud.error)
+				errors = target.errors
+		catch err
+			console.log(err)
+			STATE.alerts.push(type: 'error', msg: err)
+
 
 	def mount
+		errors = {}
 		mountDatePickers()
+		render()
 
 	def mountDatePickers
 		for own field, el of date_pickers
@@ -140,13 +146,13 @@ tag Form
 				defaultDate: Dayjs().format('DD/MM/YYYY - hh:mm')
 			})
 
-	def options relation
+	def selectOptions relation
 		let test = for rec in relations[relation]
 			{option: rec.main_field, value: rec.id}
 		test
 
 	def unmount
-		target = null
+		emit('close')
 		flatpickers.map do $1.destroy()
 
 	def changeSelect e
@@ -158,6 +164,7 @@ tag Form
 
 	<self>
 		<header .content__title>
+			console.log target
 			if target.id
 				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[model.table_name].human_name}"
 			else	
@@ -181,18 +188,33 @@ tag Form
 										else
 											fieldName(field)
 									if meta.type.prototype instanceof Record
-										<Select value=(target[field] or {}).id name=field :change.changeSelect options=options(field) placeholder=I18n.t.select>
+										<Select 
+											value=(target[field] or {}).id 
+											name=field 
+											:change.changeSelect 
+											options=selectOptions(field) 
+											placeholder=I18n.t.select>
+
 									elif meta.type == :Date
-										date_pickers[field] = <input.form-control .form-control-lg>
+										date_pickers[field] = <input
+											.form-control 
+											.form-control-lg>
 									else
-										<input value=(target[field] or '') :keyup.changeInput name=field type="text" .form-control .form-control-lg placeholder=fieldName(field)>
+										<input 
+											value=(target[field] or '') 
+											:keyup.changeInput 
+											name=field 
+											type="text" 
+											.form-control 
+											.form-control-lg 
+											placeholder=fieldName(field)>
 
 									if errors[field]
 										<small .validation-error name="{field}-validation">
 											errors[field]
 			<div .card-footer>
 				<div .btn-group .card-submit>
-					<button type="button" .btn .btn-danger :click.close>
+					<button type="button" .btn .btn-danger :click.emit('close')>
 						I18n.t.pages.crud.cancel
 					<button type="button" .btn .btn-primary :click.submit>
 						if target.id then I18n.t.pages.crud.save else I18n.t.pages.crud.add
