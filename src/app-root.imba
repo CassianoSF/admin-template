@@ -1,12 +1,4 @@
 # LIBS
-
-import dayjs from '/web_modules/dayjs'
-import dexie from '/web_modules/dexie'
-import dexieRel from '/web_modules/dexie-relationships'
-import flatpickr from '/web_modules/flatpickr'
-import {v4} from '/web_modules/uuid'
-
-
 import {Router}  from './lib/Router'
 import {Api}     from './lib/Api'
 import {Record}  from './lib/Record'
@@ -17,8 +9,6 @@ import {I18n}    from './lib/I18n'
 import {User}          from './models/admin/User'
 import {Group}         from './models/admin/Group'
 
-import {Granja}        from './models/cadastros/Granja'
-import {Nucleo}        from './models/cadastros/Nucleo'
 import {CarroNasc}     from './models/cadastros/CarroNasc'
 import {CarroInc}      from './models/cadastros/CarroInc'
 import {Incubadora}    from './models/cadastros/Incubadora'
@@ -39,10 +29,11 @@ import {Transferencia} from './models/processos/Transferencia'
 import {Pacote}        from './models/Pacote'
 
 # PAGES
-import {Login}        from './pages/Login'
-import {Home}         from './pages/Home'
-import {Crud}         from './pages/Crud'
-import {Components}   from './pages/Components'
+import {Login}           from './pages/Login'
+import {Home}            from './pages/Home'
+import {Crud}            from './pages/Crud'
+import {CrudLotes}       from './pages/CrudLotes'
+import {Components}      from './pages/Components'
 
 # COMPONENTS
 import {Sidebar} from './components/layout/Sidebar'
@@ -61,16 +52,18 @@ global.STATE = {
 
 tag app-root
 	def build
+		Router.init()
 		Router.go('/login') unless STATE.user
 		DB.init()
 		I18n.init('pt_br')
-		Api.init('http://localhost:3000')
-		# Api.init('https://arcane-scrubland-94321.herokuapp.com')
+		# Api.init('http://localhost:3000')
+		Api.init('https://arcane-scrubland-94321.herokuapp.com')
 
 	def themeBg
 		"url('/img/bg/{STATE.theme}.jpg')"
 
 	<self .app [background-image: {themeBg()}]>
+		console.log Router.current
 		<.main>
 			<Alerts>
 			if Router.current == '/login'
@@ -80,7 +73,7 @@ tag app-root
 				<Sidebar>
 				<Aside>
 				<section .content>
-					<Home>                     if Router.current == '/home'
+					<Home>                     if Router.current == '/'
 					<Crud model=User>          if Router.current == '/users'
 					<Crud model=Armazenamento> if Router.current == '/armazenamento'
 					<Crud model=Incubacao>     if Router.current == '/incubacao'
@@ -90,15 +83,14 @@ tag app-root
 					<Crud model=Recebimento>   if Router.current == '/recebimento'
 					<Crud model=Transferencia> if Router.current == '/transferencia'
 
-					<Components>             if Router.current == '/'
+					<Components>             if Router.current == '/components'
 
-					<Crud model=Lote>        if Router.current == '/lotes'
-					<Crud model=Nucleo>      if Router.current == '/nucleos-granjas'
+					<CrudLotes model=Lote>   if /\/lotes/.exec Router.current
 					<Crud model=Incubadora>  if Router.current == '/incubadoras'
 					<Crud model=Nascedouro>  if Router.current == '/nascedouros'
 					# <Crud model=Linhagem>    if Router.current == '/linhagens'
 					<Crud model=CarroInc>    if Router.current == '/carros-incubacao'
-					<Crud model=CarroNasc>   if Router.current == '/carros-nascedouro'
+					<Crud model=CarroNasc>   if Router.current == '/carros-nascimento'
 
 
 	css .app

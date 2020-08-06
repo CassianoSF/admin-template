@@ -4,29 +4,18 @@ export global class Lote < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-		ano:                      {type: :Integer}
-	}
-
-	static prop belongs_to = {
-		granja: {type: Granja}
-		nucleo: {type: Nucleo}
+		codigo:                   {type: :String}
 	}
 
 	static prop inputs = {
-		ano:    {type: :String, null: false}
-		granja: {type: Granja,  null: false}
-		nucleo: {type: Nucleo,  null: false}
+		codigo: {type: :String, null: false}
 	}
 
 	static prop index = {
-		main_field: {type: :String}
-		ano: {type: :String}
-		granja: {type: Granja}
-		nucleo: {type: Nucleo}
+		codigo: {type: :String}
 	}
 
 	get main_field
-		"{nucleo.codigo}-{granja.codigo}{ano}"
-
+		codigo
 
 Lote.setup()

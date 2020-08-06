@@ -1,4 +1,4 @@
-import Dexie from "/web_modules/dexie"
+import Dexie from "dexie"
 import relationships from 'dexie-relationships'
 
 export global class DB
@@ -16,8 +16,6 @@ export global class DB
 
 			schema[model.table_name] = columns
 		
-		console.log schema
-
 		database.version(6).stores(schema)
 
 

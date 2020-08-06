@@ -1,21 +1,43 @@
 export tag Login
 	def mount
 		loading = false
+		show_intall_btn = true
+		window.addEventListener('beforeinstallprompt') do |e|
+			e.preventDefault()
+			deferred_prompt = e
+
+		window.addEventListener('DOMContentLoaded') do
+			if window.navigator.standalone or window.matchMedia('(display-mode: standalone)').matches
+				show_intall_btn = false
+				render()
+		render()
+
+	def install
+		deferred_prompt.prompt()
+		choiceResult = await deferred_prompt.userChoice
+		if (choiceResult.outcome === 'accepted')
+			show_intall_btn = false
+			render()
 
 	def login
 		invalid = false
 		loading = true
 		error = null
-		let res = await Api.login(email, password)
-		# if res.data.error
-		# 	error = res.data.error
-		# 	STATE.alerts.push(type: 'error', msg: res.data.error)
-		# 	invalid = true
-		# else
-		# 	window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
-		# 	STATE.user = res.data.user
-		STATE.user = {username: 'Username', email: 'user@email.com'}
-		Router.go('/')
+		let res = await Api.login(email, password).catch do |err|
+			console.error err
+			if err.response
+				STATE.alerts.push(type: 'error', msg: 'Ocorreu um erro!')
+			else
+				STATE.alerts.push(type: 'error', msg: 'Não foi possível conectar com o servidor!')
+		if res.data
+			if res.data.error
+				error = res.data.error
+				STATE.alerts.push(type: 'error', msg: res.data.error)
+				invalid = true
+			else
+				window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
+				STATE.user = res.data.user
+				Router.go('/')
 
 		loading = false
 
@@ -35,14 +57,21 @@ export tag Login
 
 					if invalid
 						<p[color: #dc3545]> error
-
-				<a @click.login .btn .btn--icon .login__block__btn>
+				if show_intall_btn
+					<button @click.install [mr: 20px] .btn .btn-light>
+							<i .zmdi .zmdi-google-play>
+							" Instalar"
+				<button @click.login .btn .btn-light>
 					if loading
 						<i .zmdi .zmdi-spinner .zmdi-hc-spin>
+						" Entrar"
 					else
 						<i .zmdi .zmdi-long-arrow-right>
+						" Entrar"
+
 
 			<ul .nav .footer__nav>
+
 
 	css .login
 		min-height: 100vh

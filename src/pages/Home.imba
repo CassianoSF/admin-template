@@ -10,7 +10,7 @@ export tag Home
 						<div[font-size: calc(10px + 5vw) ta: center]>
 							<i .zmdi .zmdi-stackoverflow>
 					<div[ta: center]>
-						<div[font-size: calc(5px + 1.4vw)]> "PRODUÇÕES"
+						<div[font-size: calc(5px + 1.4vw)]> "Lotes"
 			<.col-4 @click.changePage('/recebimento') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
 				<div .icon-card>
 					<div .icon-card-body>

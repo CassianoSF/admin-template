@@ -1,13 +1,13 @@
 export tag Sidebar
 	prop menu_items = [
 			{ 
-				url: '/home'
+				url: '/'
 				icon: "zmdi-chart"
 				title: " Home"
 			},{ 
-				url: '/producoes'
+				url: '/lotes'
 				icon: "zmdi-view-dashboard"
-				title: " Produções"
+				title: " Lotes"
 			},{
 				url: '/processos'
 				icon: "zmdi-view-headline"
@@ -49,27 +49,30 @@ export tag Sidebar
 				icon: "zmdi-view-headline"
 				title: " Cadastros"
 				open: no
-				sub_menus: [
-					{ 
-						url: '/lotes'
-						icon: "zmdi-home"
-						title: " Lotes"
-					},{ 
-						url: '/nucleos-granjas'
-						icon: "zmdi-home"
-						title: " Núcleos e Granjas"
-					},{ 
+				sub_menus: [{ 
 						url: '/incubadoras'
 						icon: "zmdi-city"
 						title: " Incubadoras"
+					},{ 
+						url: '/carros-incubacao'
+						icon: "zmdi-city"
+						title: " Carros de Incubação"
 					},{ 
 						url: '/nascedouros'
 						icon: "zmdi-panorama-vertical"
 						title: " Nascedouros"
 					},{ 
+						url: '/carros-nascimento'
+						icon: "zmdi-city"
+						title: " Carros de Nascimento"
+					},{ 
 						url: '/linhagens'
 						icon: "zmdi-panorama-vertical"
 						title: " Linhagens"
+					},{ 
+						url: '/integrados'
+						icon: "zmdi-panorama-vertical"
+						title: " Integrados"
 					}
 				]
 			},{
@@ -95,11 +98,7 @@ export tag Sidebar
 				url: '/atividade'
 				icon: "zmdi-chart"
 				title: " Atividade"
-			},{ 
-				url: '/'
-				icon: "zmdi-chart"
-				title: " Components"
-			}, 
+			}
 		]
 
 	def mount

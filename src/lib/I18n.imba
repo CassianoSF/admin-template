@@ -18,8 +18,6 @@ export global class I18n
 				error: 'Registro inválido!'
 				confirm: 'Tem certeza que deseja excluir?'
 				success_destroy: 'Excluido com sucesso!'
-
-
 		models:
 			users:
 				human_name: 'Usuário'
@@ -93,7 +91,7 @@ export global class I18n
 				human_name: 'Lote'
 				plural_name: 'Lotes'
 				fields:
-					ano: 'Ano'
+					codigo: 'Código'
 
 			nucleos:
 				human_name: 'Núcleo'
@@ -116,6 +114,18 @@ export global class I18n
 			incubadoras:
 				human_name: 'Incubadora'
 				plural_name: 'Incubadoras'
+				fields:
+					codigo: 'Código'
+
+			carros_inc:
+				human_name: 'Carro de Incubação'
+				plural_name: 'Carros de Incubação'
+				fields:
+					codigo: 'Código'
+
+			carros_nasc:
+				human_name: 'Carro de Nascimento'
+				plural_name: 'Carros de Nascimento'
 				fields:
 					codigo: 'Código'
 

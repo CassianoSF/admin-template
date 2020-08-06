@@ -1,4 +1,4 @@
-import {v4} from "/web_modules/uuid"
+import {v4} from "uuid"
 
 export global class Record
 
@@ -57,7 +57,6 @@ export global class Record
 	def validate
 		errors = null
 		for own input, meta of constructor.inputs
-			console.log meta.type.prototype instanceof Record
 			if meta.type.prototype instanceof Record
 				if(not meta.null and (not self[input] or not self["{input}_id"]))
 					errors ||= {}

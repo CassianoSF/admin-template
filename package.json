@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "dev":"npx snowpack dev",
+    "build":"npx snowpack build"
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "dayjs": "^1.8.31",

@@ -7,14 +7,23 @@
     [
       "imba-snowpack",
       {
-        "entrypoints": ["app-root", "imports"]
+        "entrypoints": ["app-root"]
       }
     ]
   ],
   "installOptions": {
   },
+  "install": [
+    "imba",
+    "axios",
+    "dayjs",
+    "dexie",
+    "dexie-relationships",
+    "flatpickr",
+    "uuid"
+  ],
   "devOptions": {
-    "open": "default",
+    "open": "none",
     "bundle": true
   },
   "buildOptions": {
