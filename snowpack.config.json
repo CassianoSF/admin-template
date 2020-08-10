@@ -23,6 +23,7 @@
     "uuid"
   ],
   "devOptions": {
+    "minify": true,
     "open": "none",
     "bundle": true
   },

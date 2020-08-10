@@ -1,16 +1,13 @@
 export tag Login
 	def mount
 		loading = false
-		show_intall_btn = true
-		window.addEventListener('beforeinstallprompt') do |e|
-			e.preventDefault()
-			deferred_prompt = e
-
-		window.addEventListener('DOMContentLoaded') do
-			if window.navigator.standalone or window.matchMedia('(display-mode: standalone)').matches
-				show_intall_btn = false
-				render()
+		show_intall_btn = false
 		render()
+		window.onbeforeinstallprompt = do |e|
+			e.preventDefault()
+			show_intall_btn = true
+			render()
+			deferred_prompt = e
 
 	def install
 		deferred_prompt.prompt()
@@ -45,15 +42,15 @@ export tag Login
 		<div .login__block>
 			<div .login__block__header>
 				<a .nav-link target="_blank" href='http://v2.imba.io'>
-					<img src="/img/logo.svg" height=50>
+					<img src="/img/logo.svg" height=50 alt=''>
 
 			<div .login__block__body>
 				<form>
 					<div .form-group>
-						<input bind=email @keypress.enter.login .is-invalid=(invalid) .form-control .text-center type="email" placeholder="User" >
+						<input[ta: center] bind=email @keypress.enter.login .is-invalid=(invalid) .form-control type="email" placeholder="User" >
 
 					<div .form-group>
-						<input bind=password @keypress.enter.login .is-invalid=(invalid) .form-control .text-center type="password" placeholder="Password" >
+						<input[ta: center] bind=password @keypress.enter.login .is-invalid=(invalid) .form-control type="password" placeholder="Password" >
 
 					if invalid
 						<p[color: #dc3545]> error

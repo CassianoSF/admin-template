@@ -54,7 +54,7 @@ export tag CrudLotes
 	def confirmClose
 		confirm = false
 
-	<self .fadeIn .animated>
+	<self .fadeIn>
 		if confirm
 			<Confirm :submit.destroy :close.confirmClose message=I18n.t.pages.crud.confirm>
 		if Router.path.slice(-1) != 'lotes'
@@ -266,7 +266,8 @@ tag Form
 											name=field 
 											type="text" 
 											.form-control 
-											.form-control-lg 
+											.form-control-lg
+											autocomplate="off"
 											placeholder=fieldName(field)>
 
 									if errors[field]

@@ -50,20 +50,19 @@ global.STATE = {
 	user: JSON.parse(window.sessionStorage.getItem('user'))
 }
 
-tag app-root
+tag App
 	def build
 		Router.init()
 		Router.go('/login') unless STATE.user
 		DB.init()
 		I18n.init('pt_br')
-		# Api.init('http://localhost:3000')
-		Api.init('https://arcane-scrubland-94321.herokuapp.com')
+		Api.init('http://localhost:3000')
+		# Api.init('https://arcane-scrubland-94321.herokuapp.com')
 
 	def themeBg
 		"url('/img/bg/{STATE.theme}.jpg')"
 
-	<self .app [background-image: {themeBg()}]>
-		console.log Router.current
+	<self .app [background-image@md: {themeBg()} background-color: gray]>
 		<.main>
 			<Alerts>
 			if Router.current == '/login'
@@ -86,6 +85,7 @@ tag app-root
 					<Components>             if Router.current == '/components'
 
 					<CrudLotes model=Lote>   if /\/lotes/.exec Router.current
+					<Crud model=Producao>    if Router.current == '/producoes'
 					<Crud model=Incubadora>  if Router.current == '/incubadoras'
 					<Crud model=Nascedouro>  if Router.current == '/nascedouros'
 					# <Crud model=Linhagem>    if Router.current == '/linhagens'
@@ -114,4 +114,4 @@ tag app-root
 		min-height: 100vh
 		overflow-y: hidden
 
-imba.mount <app-root>
+imba.mount <App>

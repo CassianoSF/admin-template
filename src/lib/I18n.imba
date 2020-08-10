@@ -27,6 +27,11 @@ export global class I18n
 					email: 'Email'
 					password: 'Senha'
 					repeat_password: 'Repita a senha'
+			producoes:
+				human_name: 'Produção'
+				plural_name: 'Produções'
+				fields: 
+					lote: 'Lote'
 			armazenamentos:
 				human_name: 'Armazenamento'
 				plural_name: 'Armazenamentos'

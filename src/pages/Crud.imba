@@ -23,7 +23,6 @@ export tag Crud
 				relations[rel] = await meta.type.all()
 		render
 
-
 	def addRecord
 		target = new model
 
@@ -55,7 +54,7 @@ export tag Crud
 	def confirmClose
 		confirm = false
 
-	<self .fadeIn .animated>
+	<self .fadeIn>
 		if confirm
 			<Confirm :submit.destroy :close.confirmClose message=I18n.t.pages.crud.confirm>
 		if target
@@ -64,7 +63,7 @@ export tag Crud
 			<header .content__title>
 				<h1> 
 					I18n.t.models[model.table_name].plural_name
-			<div .card .animated .fadeIn>
+			<div .card .fadeIn>
 				<div .card-body>
 					<div .table-responsive>
 						<div .dataTables_wrapper .no-footer>
@@ -169,7 +168,7 @@ tag Form
 				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[model.table_name].human_name}"
 			else	
 				<h1> " {I18n.t.pages.crud['new']} {I18n.t.models[model.table_name].human_name}"
-		<div .card .animated .fadeIn>
+		<div .card .fadeIn>
 			<div .card-body>
 				<form>
 					if errors.len
@@ -207,6 +206,7 @@ tag Form
 											type="text" 
 											.form-control 
 											.form-control-lg 
+											autocomplate="off"
 											placeholder=fieldName(field)>
 
 									if errors[field]

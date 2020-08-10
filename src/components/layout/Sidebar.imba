@@ -8,6 +8,10 @@ export tag Sidebar
 				url: '/lotes'
 				icon: "zmdi-view-dashboard"
 				title: " Lotes"
+			},{ 
+				url: '/producoes'
+				icon: "zmdi-view-dashboard"
+				title: " Produções"
 			},{
 				url: '/processos'
 				icon: "zmdi-view-headline"
@@ -88,10 +92,6 @@ export tag Sidebar
 						url: '/grupos'
 						icon: "zmdi-accounts"
 						title: " Grupos"
-					},{ 
-						url: '/padroes'
-						icon: "zmdi-tune"
-						title: " Padrões de Qualidade"
 					}
 				]
 			},{ 
