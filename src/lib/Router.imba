@@ -1,10 +1,9 @@
 export global class Router
-	static prop current = window.location.pathname
-	static prop path
-
 	static def init
+		current = window.location.hash.slice(1)
+		path = current.split('/')
 		window.addEventListener('popstate') do |e|
-			current = e.state.slice(2)
+			current = window.location.hash.slice(1)
 			path = current.split('/')
 			imba.commit!
 

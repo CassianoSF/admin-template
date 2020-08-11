@@ -8,13 +8,34 @@ export global class Incubacao < Record
 		posicao:                  {type: :String}
 	}
 
-	static prop inputs = {
-		data_incubacao:           {type: :Date}
-		posicao:                  {type: :String}
+	static prop belongs_to = {
+		lote:                     {type: Lote}
 	}
 
-	static prop belongs_to = {
-		lote:                {type: Lote}
+	static prop has_many = {
+		pacotes: {type: :Pacotes}
 	}
+
+	static prop inputs = {
+		lote:                     {type: Lote,    null: false}
+		data_incubacao:           {type: :Date,   null: false}
+		posicao:                  {type: :String, null: false}
+	}
+
+	static prop index = {
+		lote:                     {type: Lote}
+		data_incubacao:           {type: :Date}
+		posicao:                  {type: :String}	
+	}
+
+	static prop show = {
+		lote:                     {type: Lote}
+		data_incubacao:           {type: :Date}
+		posicao:                  {type: :String}	
+		pacotes: {type: :Pacotes}
+	}
+
+	get main_field
+		"LOTE {lote.codigo} - {data_incubacao}"
 
 Incubacao.setup()

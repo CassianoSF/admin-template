@@ -47,6 +47,9 @@ export global class Record
 						rec[rel] = new meta.type rec[rel]
 				return new self(rec)
 
+	static def hasRelation field
+		Object.keys(belongs_to).includes(field)
+
 	prop errors
 
 	get fields
@@ -110,3 +113,4 @@ export global class Record
 		for own rel, meta of constructor.belongs_to
 			self["{rel}_id"] = args and args["{rel}_id"]
 			self[rel] = new meta.type(args and args[rel])
+

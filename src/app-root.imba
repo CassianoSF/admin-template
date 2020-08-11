@@ -29,7 +29,7 @@ import {Pacote}        from './models/Pacote'
 # PAGES
 import {Login}           from './pages/Login'
 import {Home}            from './pages/Home'
-import {Crud}            from './pages/Crud'
+import Crud            from './pages/Crud'
 
 # COMPONENTS
 import {Sidebar} from './components/layout/Sidebar'

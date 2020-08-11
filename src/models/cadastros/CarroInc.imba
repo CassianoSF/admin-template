@@ -12,11 +12,11 @@ export global class CarroInc < Record
 	}
 
 	static prop index = {
-		codigo: {type: :String, null: false}
+		codigo: {type: :String}
 	}
 
 	static prop show = {
-		codigo: {type: :String, null: false}
+		codigo: {type: :String}
 	}
 
 	get main_field
