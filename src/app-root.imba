@@ -16,8 +16,6 @@ import {Nascedouro}    from './models/cadastros/Nascedouro'
 import {Vacina}        from './models/cadastros/Vacina'
 import {Lote}          from './models/cadastros/Lote'
 
-import {Producao}      from './models/Producao'
-
 import {Armazenamento} from './models/processos/Armazenamento'
 import {Incubacao}     from './models/processos/Incubacao'
 import {Integracao}    from './models/processos/Integracao'
@@ -32,8 +30,6 @@ import {Pacote}        from './models/Pacote'
 import {Login}           from './pages/Login'
 import {Home}            from './pages/Home'
 import {Crud}            from './pages/Crud'
-import {CrudLotes}       from './pages/CrudLotes'
-import {Components}      from './pages/Components'
 
 # COMPONENTS
 import {Sidebar} from './components/layout/Sidebar'
@@ -73,24 +69,21 @@ tag App
 				<Aside>
 				<section .content>
 					<Home>                     if Router.current == '/'
-					<Crud model=User>          if Router.current == '/users'
-					<Crud model=Armazenamento> if Router.current == '/armazenamento'
-					<Crud model=Incubacao>     if Router.current == '/incubacao'
-					<Crud model=Integracao>    if Router.current == '/integracao'
-					<Crud model=Nascimento>    if Router.current == '/nascimento'
-					<Crud model=Processamento> if Router.current == '/processamento'
-					<Crud model=Recebimento>   if Router.current == '/recebimento'
-					<Crud model=Transferencia> if Router.current == '/transferencia'
+					<Crud model=User>          if Router.to('/users')
+					<Crud model=Armazenamento> if Router.to('/armazenamento')
+					<Crud model=Incubacao>     if Router.to('/incubacao')
+					<Crud model=Integracao>    if Router.to('/integracao')
+					<Crud model=Nascimento>    if Router.to('/nascimento')
+					<Crud model=Processamento> if Router.to('/processamento')
+					<Crud model=Recebimento>   if Router.to('/recebimento')
+					<Crud model=Transferencia> if Router.to('/transferencia')
 
-					<Components>             if Router.current == '/components'
 
-					<CrudLotes model=Lote>   if /\/lotes/.exec Router.current
-					<Crud model=Producao>    if Router.current == '/producoes'
-					<Crud model=Incubadora>  if Router.current == '/incubadoras'
-					<Crud model=Nascedouro>  if Router.current == '/nascedouros'
-					# <Crud model=Linhagem>    if Router.current == '/linhagens'
-					<Crud model=CarroInc>    if Router.current == '/carros-incubacao'
-					<Crud model=CarroNasc>   if Router.current == '/carros-nascimento'
+					<Crud model=Lote>        if Router.to('/lote')
+					<Crud model=Incubadora>  if Router.to('/incubadora')
+					<Crud model=Nascedouro>  if Router.to('/nascedouro')
+					<Crud model=CarroInc>    if Router.to('/carro_inc')
+					<Crud model=CarroNasc>   if Router.to('/carro_nasc')
 
 
 	css .app

@@ -20,7 +20,8 @@
     "dexie",
     "dexie-relationships",
     "flatpickr",
-    "uuid"
+    "uuid",
+    "js-convert-case"
   ],
   "devOptions": {
     "minify": true,

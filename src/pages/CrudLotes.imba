@@ -72,25 +72,25 @@ export tag CrudLotes
 							if records.length
 								<table .table>
 									<thead>
+										<th>
+										<th>
 										for own field, meta of Lote.index
 											if isRelation(field)
 												<th> I18n.t.models[meta.type.table_name].human_name
 											else
 												<th> I18n.t.models[Lote.table_name].fields[field]
-										<th>
-										<th>
 									<tbody>
 										for rec in records
 											<tr .main_table_tr>
+												<td @click.delete(rec) .table-action title="Excluir">
+													<a .zmdi .zmdi-delete>
+												<td  @click.edit(rec) .table-action title="Editar">
+													<a .zmdi .zmdi-edit>
 												for own field, meta of Lote.index
 													if isRelation(field)
 														<td @click.select(rec)> rec[field].main_field
 													else
 														<td @click.select(rec)> rec[field]
-												<td @click.delete(rec) .table-action title="Excluir">
-													<a .zmdi .zmdi-delete>
-												<td  @click.edit(rec) .table-action title="Editar">
-													<a .zmdi .zmdi-edit>
 							else
 								<div[ta: center]> "Sem registros"
 
@@ -267,7 +267,7 @@ tag Form
 											type="text" 
 											.form-control 
 											.form-control-lg
-											autocomplate="off"
+											autocomplete="off"
 											placeholder=fieldName(field)>
 
 									if errors[field]

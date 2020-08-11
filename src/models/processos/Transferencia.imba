@@ -4,7 +4,6 @@ export global class Transferencia < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		data_transferencia:      {type: :Date}
 		ovos_claros_removidos:   {type: :Integer}
 	}
@@ -15,7 +14,7 @@ export global class Transferencia < Record
 	}
 
 	static prop belongs_to = {
-		producao:                {type: Producao}
+		lote:                {type: Lote}
 	}
 
 Transferencia.setup()

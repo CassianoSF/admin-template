@@ -4,7 +4,6 @@ export global class Armazenamento < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		data_processamento:       {type: :Date}
 		ovos_incubaveis:          {type: :Integer}
 		ovos_de_risco:            {type: :Integer}
@@ -25,7 +24,7 @@ export global class Armazenamento < Record
 	}
 
 	static prop belongs_to = {
-		producao:                {type: Producao}
+		lote:                {type: Lote}
 	}
 
 

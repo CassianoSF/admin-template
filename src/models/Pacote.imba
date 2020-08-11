@@ -4,7 +4,6 @@ export global class Pacote < Record
 		id:             {type: :String}
 		created_at:     {type: :Date}
 		updated_at:     {type: :Date}
-
 		incompleto:     {type: :Boolean}
 	}
 

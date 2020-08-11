@@ -550,27 +550,25 @@ textarea {
 
 ::-webkit-scrollbar {
 	width: 15px;
+	height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-	background: #000; 
+	background: black; 
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	box-shadow: inset 0 0 15px grey; 
-	border-radius: 10px;
 	background: #333; 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: #666; 
-	box-shadow: inset 0 0 15px white; 
 }
 
 ::-webkit-scrollbar-corner {
-  background: #000;
+	background: #000;
 }
 
 .btn,
@@ -2328,16 +2326,14 @@ pre code {
 	background-color: transparent
 }
 
-@media (max-width:1023px) {
-	.table-responsive {
-		display: block;
-		width: 100%;
-		overflow-x: auto;
-		-ms-overflow-style: -ms-autohiding-scrollbar
-	}
-	.table-responsive.table-bordered {
-		border: 0
-	}
+.table-responsive {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+	-ms-overflow-style: -ms-autohiding-scrollbar
+}
+.table-responsive.table-bordered {
+	border: 0
 }
 
 .collapsing,

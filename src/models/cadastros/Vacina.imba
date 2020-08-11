@@ -13,6 +13,15 @@ export global class Vacina < Record
 		descricao:                {type: :String}
 	}
 
+	static prop index = {
+		codigo: {type: :String, null: false}
+	}
+
+	static prop show = {
+		codigo: {type: :String, null: false}
+		descricao:                {type: :String}
+	}
+
 	get main_field
 		codigo
 

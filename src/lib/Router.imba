@@ -12,3 +12,6 @@ export global class Router
 		current = url
 		path = current.split('/')
 		window.history.pushState("/#{url}", "/#{url}", "/#{url}")
+
+	static def to url
+		RegExp(url).exec(current)

@@ -11,6 +11,14 @@ export global class CarroNasc < Record
 		codigo: {type: :String, null: false}
 	}
 
+	static prop index = {
+		codigo: {type: :String, null: false}
+	}
+
+	static prop show = {
+		codigo: {type: :String, null: false}
+	}
+
 	get main_field
 		codigo
 

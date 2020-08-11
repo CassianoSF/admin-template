@@ -1,105 +1,101 @@
 export tag Sidebar
 	prop menu_items = [
-			{ 
-				url: '/'
-				icon: "zmdi-chart"
-				title: " Home"
-			},{ 
-				url: '/lotes'
-				icon: "zmdi-view-dashboard"
-				title: " Lotes"
-			},{ 
-				url: '/producoes'
-				icon: "zmdi-view-dashboard"
-				title: " Produções"
-			},{
-				url: '/processos'
-				icon: "zmdi-view-headline"
-				title: " Processos"
-				open: no
-				sub_menus: [
-					{ 
-						url: '/recebimento'
-						icon: "zmdi-view-dashboard"
-						title: " Recebimento"
-					},{ 
-						url: '/armazenamento'
-						icon: "zmdi-view-dashboard"
-						title: " Armazenamento"
-					},{ 
-						url: '/incubacao'
-						icon: "zmdi-view-dashboard"
-						title: " Incubação"
-					},{ 
-						url: '/transferencia'
-						icon: "zmdi-view-dashboard"
-						title: " Transferência"
-					},{ 
-						url: '/nascimento'
-						icon: "zmdi-view-dashboard"
-						title: " Nascimento"
-					},{ 
-						url: '/processamento'
-						icon: "zmdi-view-dashboard"
-						title: " Processamento"
-					},{ 
-						url: '/integracao'
-						icon: "zmdi-view-dashboard"
-						title: " Integração"
-					}
-				]
-			},{
-				url: '/cadastros'
-				icon: "zmdi-view-headline"
-				title: " Cadastros"
-				open: no
-				sub_menus: [{ 
-						url: '/incubadoras'
-						icon: "zmdi-city"
-						title: " Incubadoras"
-					},{ 
-						url: '/carros-incubacao'
-						icon: "zmdi-city"
-						title: " Carros de Incubação"
-					},{ 
-						url: '/nascedouros'
-						icon: "zmdi-panorama-vertical"
-						title: " Nascedouros"
-					},{ 
-						url: '/carros-nascimento'
-						icon: "zmdi-city"
-						title: " Carros de Nascimento"
-					},{ 
-						url: '/linhagens'
-						icon: "zmdi-panorama-vertical"
-						title: " Linhagens"
-					},{ 
-						url: '/integrados'
-						icon: "zmdi-panorama-vertical"
-						title: " Integrados"
-					}
-				]
-			},{
-				url: '/administrativo'
-				icon: "zmdi-view-headline"
-				title: " Administrativo"
-				open: no
-				sub_menus: [{ 
-						url: '/usuarios'
-						icon: "zmdi-account-circle"
-						title: " Usuários"
-					},{ 
-						url: '/grupos'
-						icon: "zmdi-accounts"
-						title: " Grupos"
-					}
-				]
-			},{ 
-				url: '/atividade'
-				icon: "zmdi-chart"
-				title: " Atividade"
-			}
-		]
+		{ 
+			url: '/'
+			icon: "zmdi-chart"
+			title: " Home"
+		},{ 
+			url: '/lote'
+			icon: "zmdi-view-dashboard"
+			title: " Lotes"
+		},{
+			url: '/processos'
+			icon: "zmdi-view-headline"
+			title: " Processos"
+			open: no
+			sub_menus: [
+				{ 
+					url: '/recebimento'
+					icon: "zmdi-view-dashboard"
+					title: " Recebimento"
+				},{ 
+					url: '/armazenamento'
+					icon: "zmdi-view-dashboard"
+					title: " Armazenamento"
+				},{ 
+					url: '/incubacao'
+					icon: "zmdi-view-dashboard"
+					title: " Incubação"
+				},{ 
+					url: '/transferencia'
+					icon: "zmdi-view-dashboard"
+					title: " Transferência"
+				},{ 
+					url: '/nascimento'
+					icon: "zmdi-view-dashboard"
+					title: " Nascimento"
+				},{ 
+					url: '/processamento'
+					icon: "zmdi-view-dashboard"
+					title: " Processamento"
+				},{ 
+					url: '/integracao'
+					icon: "zmdi-view-dashboard"
+					title: " Integração"
+				}
+			]
+		},{
+			url: '/cadastros'
+			icon: "zmdi-view-headline"
+			title: " Cadastros"
+			open: no
+			sub_menus: [{ 
+					url: '/incubadora'
+					icon: "zmdi-city"
+					title: " Incubadoras"
+				},{ 
+					url: '/carro_inc'
+					icon: "zmdi-city"
+					title: " Carros de Incubação"
+				},{ 
+					url: '/nascedouro'
+					icon: "zmdi-panorama-vertical"
+					title: " Nascedouros"
+				},{ 
+					url: '/carro_nasc'
+					icon: "zmdi-city"
+					title: " Carros de Nascimento"
+				},{ 
+					url: '/linhagem'
+					icon: "zmdi-panorama-vertical"
+					title: " Linhagens"
+				},{ 
+					url: '/integrado'
+					icon: "zmdi-panorama-vertical"
+					title: " Integrados"
+				}
+			]
+		},{
+			url: '/administrativo'
+			icon: "zmdi-view-headline"
+			title: " Administrativo"
+			open: no
+			sub_menus: [{ 
+					url: '/usuarios'
+					icon: "zmdi-account-circle"
+					title: " Usuários"
+				},{ 
+					url: '/grupos'
+					icon: "zmdi-accounts"
+					title: " Grupos"
+				}
+			]
+		},{ 
+			url: '/atividade'
+			icon: "zmdi-chart"
+			title: " Atividade"
+		}
+	]
 
 	def mount
 		window.addEventListener('popstate') do |e|

@@ -1,8 +1,8 @@
 import Flatpickr from "flatpickr"
 import Dayjs from "dayjs"
+import CaseConverter from 'js-convert-case'
 import {Select} from "../components/inputs/Select"
 import {Confirm} from "../components/ui/Confirm"
-
 
 export tag Crud
 	prop records = []
@@ -19,7 +19,8 @@ export tag Crud
 		records = await model.all()
 		relations = {}
 		if model.belongs_to
-			for own rel, meta of model.belongs_to
+			for own rel, meta of model.inputs
+				continue unless meta.type.prototype instanceof Record
 				relations[rel] = await meta.type.all()
 		render
 
@@ -31,7 +32,7 @@ export tag Crud
 		loadRecords()
 
 	def select rec
-		console.log rec
+		Router.go("/{model.name.toLowerCase()}/" + rec.id)
 
 	def delete rec
 		confirm = rec
@@ -57,11 +58,15 @@ export tag Crud
 	<self .fadeIn>
 		if confirm
 			<Confirm :submit.destroy :close.confirmClose message=I18n.t.pages.crud.confirm>
-		if target
+		if Router.path.slice(-1) != CaseConverter.toSnakeCase(model.name).toLowerCase()
+			<Show model=model>
+		elif target
 			<Form :close.closeForm model=model target=target relations=relations>
 		else
 			<header .content__title>
 				<h1> 
+					<a :click=(Router.go('/'))> 'Home'
+					<i[mx: 10px] .zmdi .zmdi-arrow-right>
 					I18n.t.models[model.table_name].plural_name
 			<div .card .fadeIn>
 				<div .card-body>
@@ -98,6 +103,35 @@ export tag Crud
 							<i .zmdi .zmdi-plus>
 							' Adicionar'
 
+
+tag Show
+	prop target
+	prop model
+
+	def mount
+		id = Router.path.slice(-1)
+		target = await model.find(id)
+		render()
+
+	<self .animated .fadeIn>
+		<header .content__title>
+			<h1> 
+				<a :click=(Router.go("/"))> 'Home'
+				<i[mx: 10px] .zmdi .zmdi-arrow-right>
+				<a :click=(Router.go("/{CaseConverter.toSnakeCase(model.name).toLowerCase()}"))> I18n.t.models[model.table_name].plural_name
+				<i[mx: 10px] .zmdi .zmdi-arrow-right>
+				target.main_field if target
+		<div[mb: 40px] .row>
+			if target
+				for own field, meta of model.show
+					<div .col-md-4>
+						<div[p: 20px] .card>
+							if meta.type.prototype instanceof Record
+								<div .card-title> target[field].main_field
+								<p .card-subtitle> I18n.t.models[meta.type.table_name].human_name
+							else
+								<div .card-title> target[field]
+								<p .card-subtitle> I18n.t.models[model.table_name].fields[field]
 
 tag Form
 	prop errors = {}
@@ -146,9 +180,8 @@ tag Form
 			})
 
 	def selectOptions relation
-		let test = for rec in relations[relation]
+		for rec in relations[relation]
 			{option: rec.main_field, value: rec.id}
-		test
 
 	def unmount
 		emit('close')
@@ -163,7 +196,6 @@ tag Form
 
 	<self>
 		<header .content__title>
-			console.log target
 			if target.id
 				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[model.table_name].human_name}"
 			else	
@@ -206,7 +238,7 @@ tag Form
 											type="text" 
 											.form-control 
 											.form-control-lg 
-											autocomplate="off"
+											autocomplete="off"
 											placeholder=fieldName(field)>
 
 									if errors[field]

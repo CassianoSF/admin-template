@@ -4,7 +4,6 @@ export global class Nascimento < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		data_nascimento:          {type: :Date}
 	}
 
@@ -13,7 +12,7 @@ export global class Nascimento < Record
 	}
 
 	static prop belongs_to = {
-		producao:                {type: Producao}
+		lote:                {type: Lote}
 	}
 
 Nascimento.setup()

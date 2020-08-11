@@ -4,7 +4,6 @@ export global class Processamento < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		data_processamento:  {type: :Date}
 		machos_de_primeira:  {type: :Integer}
 		machos_de_segunda:   {type: :Integer}
@@ -23,7 +22,7 @@ export global class Processamento < Record
 	}
 
 	static prop belongs_to = {
-		producao:                {type: Producao}
+		lote:                {type: Lote}
 	}
 
 Processamento.setup()

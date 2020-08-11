@@ -4,7 +4,6 @@ export global class Integracao < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		quantidade_pintos:        {type: :Integer}
 		sexo_pinto:               {type: :String}
 		data_saida:               {type: :Date}
@@ -15,7 +14,7 @@ export global class Integracao < Record
 	}
 
 	static prop belongs_to = {
-		producao:                {type: Producao}
+		lote:                {type: Lote}
 	}
 
 Integracao.setup()

@@ -15,6 +15,10 @@ export global class Lote < Record
 		codigo: {type: :String}
 	}
 
+	static prop show = {
+		codigo: {type: :String}
+	}
+
 	get main_field
 		codigo
 

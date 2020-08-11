@@ -54,7 +54,7 @@ export tag Header
 				<img src='/img/logo.svg'>
 			<form .search .search--focus=search_focus .search--toggled=search_toggled>
 				<div .search__inner>
-					search_input = <input @focus.focusSearch @blur.blurSearch type="text" .search__text placeholder="Search for people, files, documents...">
+					search_input = <input @focus.focusSearch @blur.blurSearch type="text" .search__text placeholder="Procure por lotes, cadastros, processos...">
 					<i .zmdi .search__helper .zmdi-search=!search_focus .zmdi-long-arrow-right=search_focus>
 			<ul .top-nav>
 				<li .top-nav-item .hidden-xl-up>

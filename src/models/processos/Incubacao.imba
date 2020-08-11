@@ -4,7 +4,6 @@ export global class Incubacao < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		data_incubacao:           {type: :Date}
 		posicao:                  {type: :String}
 	}
@@ -15,7 +14,7 @@ export global class Incubacao < Record
 	}
 
 	static prop belongs_to = {
-		producao:                {type: Producao}
+		lote:                {type: Lote}
 	}
 
 Incubacao.setup()

@@ -4,7 +4,6 @@ export global class Recebimento < Record
 		id:                       {type: :String}
 		created_at:               {type: :Date}
 		updated_at:               {type: :Date}
-
 		data_postura:             {type: :Date}
 		data_entrada:             {type: :Date}
 		total_de_ovos_enviados:   {type: :Integer}
@@ -14,6 +13,14 @@ export global class Recebimento < Record
 		gema_dupla:               {type: :Integer}
 		trincado:                 {type: :Integer}
 		sujo_descartado:          {type: :Integer}
+	}
+
+	static prop belongs_to = {
+		lote: {type: Lote}
+	}
+
+	static prop has_many = {
+		pacotes: {type: :Pacote}
 	}
 
 	static prop inputs = {
@@ -27,10 +34,27 @@ export global class Recebimento < Record
 		gema_dupla:               {type: :Integer, null: false}
 		trincado:                 {type: :Integer, null: false}
 		sujo_descartado:          {type: :Integer, null: false}
+		pacotes:                  {type: :Pacote}
 	}
 
-	static prop belongs_to = {
-		producao: {type: Producao}
+	static prop index = {
+		lote:                     {type: Lote, null: false}
+		data_postura:             {type: :Date, null: false}
+		data_entrada:             {type: :Date, null: false}
+		total_de_ovos_enviados:   {type: :Integer, null: false}
+	}
+
+	static prop show = {
+		lote:                     {type: Lote, null: false}
+		data_postura:             {type: :Date, null: false}
+		data_entrada:             {type: :Date, null: false}
+		total_de_ovos_enviados:   {type: :Integer, null: false}
+		ovos_limpos:              {type: :Integer, null: false}
+		ovos_de_cama:             {type: :Integer, null: false}
+		ovos_sujos_de_ninho:      {type: :Integer, null: false}
+		gema_dupla:               {type: :Integer, null: false}
+		trincado:                 {type: :Integer, null: false}
+		sujo_descartado:          {type: :Integer, null: false}		
 	}
 
 Recebimento.setup()

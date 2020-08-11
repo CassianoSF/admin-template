@@ -33,6 +33,19 @@ export global class Record
 						rec[rel] = new meta.type rec[rel]
 				new self(rec)
 
+	static def find id
+		let includes = {}
+		for own rel, meta of belongs_to
+			includes[rel] = "{rel}_id"
+
+		table.where(id: id).with(includes).then do |records|
+			for rec in records
+				for own rel, meta of belongs_to
+					if rec[rel] == []
+						rec[rel] = null
+					else
+						rec[rel] = new meta.type rec[rel]
+				return new self(rec)
 
 	prop errors
 
@@ -58,6 +71,7 @@ export global class Record
 		errors = null
 		for own input, meta of constructor.inputs
 			if meta.type.prototype instanceof Record
+				console.log self, input
 				if(not meta.null and (not self[input] or not self["{input}_id"]))
 					errors ||= {}
 					errors[input] =("{I18n.t.models[meta.type.table_name].human_name} {I18n.t.validation_error.not_null}")
@@ -65,7 +79,6 @@ export global class Record
 				if(not meta.null and not self[input])
 					errors ||= {}
 					errors[input] =("{I18n.t.models[constructor.table_name].fields[input]} {I18n.t.validation_error.not_null}")
-
 
 	def update
 		validate()
