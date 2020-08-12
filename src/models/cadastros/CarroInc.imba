@@ -1,25 +1,23 @@
-export global class CarroInc < Record
-	static prop table_name = 'carros_inc'
-	static prop fields = {
-		id:                       {type: :String}
-		created_at:               {type: :Date}
-		updated_at:               {type: :Date}
-		codigo:                   {type: :String}
-	}
-
-	static prop inputs = {
-		codigo: {type: :String, null: false}
-	}
-
-	static prop index = {
-		codigo: {type: :String}
-	}
-
-	static prop show = {
-		codigo: {type: :String}
-	}
+export global class CarroInc < Model
 
 	get main_field
 		codigo
 
-CarroInc.setup()
+CarroInc.setup(
+	plural_name: 'carros_inc'
+	singular_name: 'carro_inc'
+	fields:
+		id:                       :string
+		created_at:               :date
+		updated_at:               :date
+		codigo:                   :string
+
+	form:
+		codigo: :string
+
+	index:
+		codigo: :string
+
+	show:
+		codigo: :string
+)

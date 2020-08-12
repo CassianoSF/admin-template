@@ -1,4 +1,3 @@
-import ConvertCase from 'js-convert-case'
 import Dayjs from "dayjs"
 import Flatpickr from "flatpickr"
 import {Select} from "../../components/inputs/Select"
@@ -7,17 +6,26 @@ export default tag Form
 	prop errors = {}
 	prop loading
 	prop model
-	prop target
+	prop target = {}
 	prop relations = {}
 	prop date_pickers = []
 	prop flatpickers = []
 
+	def mount
+		target = await model.find(id)
+		mountDatePickers()
+		id = Router.path.slice(-1)
+		if model.belongs_to
+			for own rel, type of model.form
+				continue unless Model.models[type]
+				relations[rel] = await Model.models[type].class.all()
+		render()
 
 	def fieldName field
-		I18n.t.models[model.table_name].fields[field]
+		I18n.t.models[model.plural_name].fields[field]
 
-	def relationName rel
-		I18n.t.models[rel.table_name].human_name
+	def relationName type
+		I18n.t.models[Model.models[type].plural_name].human_name
 
 	def close
 		emit('close')
@@ -28,7 +36,7 @@ export default tag Form
 			console.log save
 			if (save)
 				STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success)
-				Router.go("/{ConvertCase.toSnakeCase(model.name).toLowerCase()}/{target.id}")
+				Router.go("/{model.singular_name}/{target.id}")
 			else
 				STATE.alerts.push(type: 'error', msg: I18n.t.pages.crud.error)
 				errors = target.errors
@@ -36,11 +44,6 @@ export default tag Form
 			console.log(err)
 			STATE.alerts.push(type: 'error', msg: err)
 
-
-	def mount
-		errors = {}
-		mountDatePickers()
-		render()
 
 	def mountDatePickers
 		for own field, el of date_pickers
@@ -67,12 +70,13 @@ export default tag Form
 		target[e.target.name] = e.target.value
 		render()
 
+	
 	<self>
 		<header .content__title>
 			if target.id
-				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[model.table_name].human_name}"
+				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[model.plural_name].human_name}"
 			else	
-				<h1> " {I18n.t.pages.crud['new']} {I18n.t.models[model.table_name].human_name}"
+				<h1> " {I18n.t.pages.crud['new']} {I18n.t.models[model.plural_name].human_name}"
 		<div .card .fadeIn>
 			<div .card-body>
 				<form>
@@ -83,15 +87,15 @@ export default tag Form
 									<p>
 										" • {fieldName(field)} {error[0]}"
 					<div .form-row>
-						for own field, meta of model.inputs
+						for own field, type of model.form
 							<div .col-md-4>
 								<div .form-group>
 									<label>
-										if meta.type.prototype instanceof Record
-											relationName(meta.type)
+										if Model.models[type]
+											relationName(type)
 										else
 											fieldName(field)
-									if meta.type.prototype instanceof Record
+									if Model.models[type]
 										<Select 
 											value=(target[field] or {}).id 
 											name=field 
@@ -99,7 +103,7 @@ export default tag Form
 											options=selectOptions(field) 
 											placeholder=I18n.t.select>
 
-									elif meta.type == :Date
+									elif type == :date
 										date_pickers[field] = <input bind=target[field]
 											.form-control 
 											.form-control-lg>
@@ -123,8 +127,7 @@ export default tag Form
 						I18n.t.pages.crud.cancel
 					<button type="button" .btn .btn-primary :click.submit>
 						if target.id then I18n.t.pages.crud.save else I18n.t.pages.crud.add
-						if loading
-							<i .zmdi .zmdi-spinner .zmdi-hc-spin>
+						if loading then <i .zmdi .zmdi-spinner .zmdi-hc-spin>
 
 	css .card-footer
 		height: 75px

@@ -1,18 +1,17 @@
-export global class User < Record
-	static prop table_name = 'users'
-	static prop fields = {
-		id:          {type: :String}
-		created_at:  {type: :Date}
-		updated_at:  {type: :Date}
-		name:        {type: :String}
-		email:       {type: :String}
-	}
+export global class User < Model
 
-	static prop inputs = {
-		name:            {type: :String}
-		email:           {type: :String}
-		password:        {type: :String}
-		repeat_password: {type: :String}
-	}
-
-User.setup()
+User.setup {
+	plural_name: :users
+	singular_name: :user
+	fields:
+		id:          :string
+		created_at:  :date
+		updated_at:  :date
+		username:    :string
+		email:       :string
+	inputs:
+		username:        :string
+		email:           :string
+		password:        :string
+		repeat_password: :string
+}

@@ -12,6 +12,7 @@
     ]
   ],
   "installOptions": {
+    "sourceMap": true
   },
   "install": [
     "imba",
@@ -24,10 +25,11 @@
     "js-convert-case"
   ],
   "devOptions": {
-    "minify": true,
+    "minify": false,
     "open": "none",
     "bundle": true
   },
   "buildOptions": {
+    "minify": true
   }
 }

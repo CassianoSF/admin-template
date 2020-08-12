@@ -8,17 +8,17 @@ export global class DB
 	static def init
 		database = new Dexie('my-db', {addons: [relationships]})
 		schema = {}
-		for own name, model of Record.models
+		for own name, model of Model.models
 			let columns = Object.keys(model.fields).join(',')
-			if Object.keys(model.belongs_to).length
-				for own relation, meta of model.belongs_to
-					columns += ", {relation}_id -> {meta.type.table_name}.id"
+			if model.belongs_to
+				for own relation, type of model.belongs_to
+					columns += ", {relation}_id -> {Model.models[type].plural_name}.id"
 
-			schema[model.table_name] = columns
+			schema[model.plural_name] = columns
 		
 		database.version(6).stores(schema)
 
 
-		for own name, model of Record.models
-			self[model.table_name] = database[model.table_name]
+		for own name, model of Model.models
+			self[model.plural_name] = database[model.plural_name]
 

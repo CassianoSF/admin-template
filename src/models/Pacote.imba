@@ -1,28 +1,29 @@
-export global class Pacote < Record
-	static prop table_name = 'pacotes'
-	static prop fields = {
-		id:             {type: :String}
-		created_at:     {type: :Date}
-		updated_at:     {type: :Date}
-		incompleto:     {type: :Boolean}
-	}
-
-	static prop belongs_to = {
-		armazenamento:  {type: Armazenamento}
-		incubacao:      {type: Incubacao}
-		integracao:     {type: Integracao}
-		nascimento:     {type: Nascimento}
-		processamento:  {type: Processamento}
-		recebimento:    {type: Recebimento}
-		transferencia:  {type: Transferencia}
-		carro_inc:      {type: CarroInc}
-		incubadora:     {type: Incubadora}
-		carro_nasc:     {type: CarroNasc}
-		nascedouro:     {type: Nascedouro}
-		vacina_1:       {type: Vacina}
-		vacina_2:       {type: Vacina}
-		# integrado:      {type: Integrado}
-	}
+export global class Pacote < Model
 
 
-Pacote.setup()
+Pacote.setup {
+	plural_name: 'pacotes'
+	singular_name: 'pacotes'
+	sync: true
+	fields:
+		id:            :string
+		created_at:    :date
+		updated_at:    :date
+		incompleto:    :boolean
+
+	belongs_to:
+		armazenamento: :armazenamento
+		incubacao:     :incubacao
+		integracao:    :integracao
+		nascimento:    :nascimento
+		processamento: :processamento
+		recebimento:   :recebimento
+		transferencia: :transferencia
+		carro_inc:     :carro_inc
+		incubadora:    :incubadora
+		carro_nasc:    :carro_nasc
+		nascedouro:    :nascedouro
+		vacina_1:      :vacina
+		vacina_2:      :vacina
+		# integrado:     :integrado
+}

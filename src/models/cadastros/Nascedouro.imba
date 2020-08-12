@@ -1,25 +1,23 @@
-export global class Nascedouro < Record
-	static prop table_name = 'nascedouros'
-	static prop fields = {
-		id:                       {type: :String}
-		created_at:               {type: :Date}
-		updated_at:               {type: :Date}
-		codigo:                   {type: :String}
-	}
-
-	static prop inputs = {
-		codigo: {type: :String, null: false}
-	}
-
-	static prop index = {
-		codigo: {type: :String}
-	}
-
-	static prop show = {
-		codigo: {type: :String}
-	}
+export global class Nascedouro < Model
 
 	get main_field
 		codigo
 
-Nascedouro.setup()
+Nascedouro.setup(
+	plural_name: 'nascedouros'
+	singular_name: 'nascedouro'
+	fields:
+		id:                       :string
+		created_at:               :date
+		updated_at:               :date
+		codigo:                   :string
+
+	form:
+		codigo: :string
+
+	index:
+		codigo: :string
+
+	show:
+		codigo: :string
+)

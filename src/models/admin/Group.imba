@@ -1,11 +1,13 @@
-export global class Group < Record
-	static prop table_name = 'groups'
-	static prop fields = {
-		id:          {type: :String}
-		created_at:  {type: :Date}
-		updated_at:  {type: :Date}
-		name:        {type: :String}
-		permission:  {type: :Permissions}
-	}
+export global class Group < Model
 
-Group.setup()
+Group.setup {
+	plural_name: :groups
+	singular_name: :group
+	fields:
+		id:          :string
+		created_at:  :date
+		updated_at:  :date
+		name:        :string
+	has_many:
+		permission:  :permission
+}

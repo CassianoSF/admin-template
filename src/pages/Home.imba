@@ -4,7 +4,7 @@ export tag Home
 
 	<self>
 		<.row[p: 4vw]>
-			<.col-4 @click.changePage('/lotes') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
+			<.col-4 @click.changePage('/lote') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
 				<div .icon-card>
 					<div .icon-card-body>
 						<div[font-size: calc(10px + 5vw) ta: center]>
@@ -25,14 +25,14 @@ export tag Home
 							<i .zmdi .zmdi-dropbox>
 					<div[ta: center]>
 						<div[font-size: calc(5px + 1.4vw)]> "ARMAZENAMENTO"
-			<.col-4 @click.changePage('/incubação') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
+			<.col-4 @click.changePage('/incubacao') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
 				<div .icon-card>
 					<div .icon-card-body>
 						<div[font-size: calc(10px + 5vw) ta: center]>
 							<i .zmdi .zmdi-toys>
 					<div[ta: center]>
 						<div[font-size: calc(5px + 1.4vw)]> "INCUBAÇÃO"
-			<.col-4 @click.changePage('/transferência') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
+			<.col-4 @click.changePage('/transferencia') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
 				<div .icon-card>
 					<div .icon-card-body>
 						<div[font-size: calc(10px + 5vw) ta: center]>
@@ -53,7 +53,7 @@ export tag Home
 							<i .zmdi .zmdi-assignment-return>
 					<div[ta: center]>
 						<div[font-size: calc(5px + 1.4vw)]> "PROCESSAMENTO"
-			<.col-4 @click.changePage('/integração') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
+			<.col-4 @click.changePage('/integracao') [p: 1px background-color@hover: rgba(0,0,0,0.4)]>
 				<div .icon-card>
 					<div .icon-card-body>
 						<div[font-size: calc(10px + 5vw) ta: center]>

@@ -1,9 +1,9 @@
 # LIBS
-import {Router}  from './lib/Router'
-import {Api}     from './lib/Api'
-import {Record}  from './lib/Record'
-import {DB}      from './lib/DB'
-import {I18n}    from './lib/I18n'
+import {I18n}   from './lib/I18n'
+import {Router} from './lib/Router'
+import Api      from './lib/Api'
+import Model    from './lib/Model'
+import {DB}     from './lib/DB'
 
 # MODELS
 import {User}          from './models/admin/User'
@@ -46,15 +46,19 @@ global.STATE = {
 	user: JSON.parse(window.sessionStorage.getItem('user'))
 }
 
-tag App
-	def build
-		Router.init()
-		Router.go('/login') unless STATE.user
-		DB.init()
-		I18n.init('pt_br')
-		Api.init('http://localhost:3000')
-		# Api.init('https://arcane-scrubland-94321.herokuapp.com')
+Router.init()
+Router.go('/login') unless STATE.user
+DB.init()
+I18n.init('pt_br')
+Api.init('http://localhost:3000')
+# Api.init('https://arcane-scrubland-94321.herokuapp.com')
 
+# let u = User.new(username: 'Suporte', password: '123456', repeat_password: '123456', email: 'suporte@avi.com')
+# console.log u.save()
+# console.log u.errors
+
+
+tag App
 	def themeBg
 		"url('/img/bg/{STATE.theme}.jpg')"
 

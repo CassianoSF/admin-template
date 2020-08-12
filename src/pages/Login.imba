@@ -47,7 +47,7 @@ export tag Login
 			<div .login__block__body>
 				<form>
 					<div .form-group>
-						<input[ta: center] bind=email @keypress.enter.login .is-invalid=(invalid) .form-control type="email" placeholder="User" >
+						<input[ta: center] bind=email @keypress.enter.login .is-invalid=(invalid) .form-control type="email" placeholder="Email" >
 
 					<div .form-group>
 						<input[ta: center] bind=password @keypress.enter.login .is-invalid=(invalid) .form-control type="password" placeholder="Password" >

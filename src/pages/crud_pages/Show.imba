@@ -1,4 +1,6 @@
 import ConvertCase from 'js-convert-case'
+import CrudPacoteRecebimento from '../../components/custom/CrudPacoteRecebimento'
+
 
 export default tag Show
 	prop target
@@ -13,20 +15,26 @@ export default tag Show
 		<header .content__title>
 			<h1> 
 				<a :click=(Router.go("/"))> 'Home'
-				<i[mx: 10px] .zmdi .zmdi-arrow-right>
-				<a :click=(Router.go("/{ConvertCase.toSnakeCase(model.name).toLowerCase()}"))> I18n.t.models[model.table_name].plural_name
-				<i[mx: 10px] .zmdi .zmdi-arrow-right>
+				<i[mx: 10px] .zmdi .zmdi-chevron-right .zmdi-hc-lg>
+				<a :click=(Router.go("/{model.singular_name}"))> I18n.t.models[model.plural_name].plural_name
+				<i[mx: 10px] .zmdi .zmdi-chevron-right .zmdi-hc-lg>
 				if target
 					console.log target
 					target.main_field 
 		<div[mb: 40px] .row>
 			if target
-				for own field, meta of model.show
+				for own field, type of model.show
 					<div .col-md-4>
 						<div[p: 20px] .card>
-							if meta.type.prototype instanceof Record
+							if Model.models[type]
 								<div .card-title> target[field].main_field
-								<p .card-subtitle> I18n.t.models[meta.type.table_name].human_name
+								<p .card-subtitle> I18n.t.models[Model.models[type].plural_name].human_name
 							else
 								<div .card-title> target[field]
-								<p .card-subtitle> I18n.t.models[model.table_name].fields[field]
+								<p .card-subtitle> I18n.t.models[model.plural_name].fields[field]
+
+		if model == Recebimento
+			<header .content__title>
+				<h1> 
+					'Carros de Incubação'
+			<CrudPacoteRecebimento recebimento=target>

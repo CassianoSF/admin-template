@@ -1,41 +1,38 @@
-export global class Transferencia < Record
-	static prop table_name = 'transferencias'
-	static prop fields = {
-		id:                       {type: :String}
-		created_at:               {type: :Date}
-		updated_at:               {type: :Date}
-		data_transferencia:       {type: :Date}
-		ovos_claros_removidos:    {type: :Integer}
-	}
-
-	static prop belongs_to = {
-		lote:                     {type: Lote}
-	}
-
-	static prop has_manu = {
-		pacotes:                  {type: :Pacote}
-	}
-
-	static prop inputs = {
-		lote:                     {type: Lote,     null: false}
-		data_transferencia:       {type: :Date,    null: false}
-		ovos_claros_removidos:    {type: :Integer, null: false}
-	}
-
-	static prop index = {
-		lote:                     {type: Lote}
-		data_transferencia:       {type: :Date}
-		ovos_claros_removidos:    {type: :Integer}
-	}
-
-	static prop show = {
-		lote:                     {type: Lote}
-		data_transferencia:       {type: :Date}
-		ovos_claros_removidos:    {type: :Integer}
-		pacotes:                  {type: :Pacote}
-	}
-
+export global class Transferencia < Model
 	get main_field
 		"LOTE {lote.codigo} - {data_transferencia}"
 
-Transferencia.setup()
+Transferencia.setup {
+	plural_name: 'transferencias'
+	singular_name: 'transferencia'
+	sync: true
+	fields:
+		id:                       :string
+		created_at:               :date
+		updated_at:               :date
+		data_transferencia:       :date
+		ovos_claros_removidos:    :integer
+
+	belongs_to:
+		lote: :lote
+
+	has_many:
+		pacotes: :pacotes
+
+	form: 
+		lote:                     :lote
+		data_transferencia:       :date
+		ovos_claros_removidos:    :integer
+		pacotes:                  :pacote
+
+	index:
+		lote:                     :lote
+		data_transferencia:       :date
+		ovos_claros_removidos:    :integer
+
+	show:
+		lote:                     :lote
+		data_transferencia:       :date
+		ovos_claros_removidos:    :integer
+		pacotes:                  :pacote
+}

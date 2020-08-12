@@ -1,52 +1,49 @@
-export global class Processamento < Record
-	static prop table_name = 'processamentos'
-	static prop fields = {
-		id:                  {type: :String}
-		created_at:          {type: :Date}
-		updated_at:          {type: :Date}
-		data_processamento:  {type: :Date}
-		machos_de_primeira:  {type: :Integer}
-		machos_de_segunda:   {type: :Integer}
-		femeas_de_primeira:  {type: :Integer}
-		femeas_de_segunda:   {type: :Integer}
-		pintos_descartados:  {type: :Integer}
-	}
-
-	static prop belongs_to = {
-		lote:                {type: Lote}
-	}
-
-	static prop has_many = {
-		pacotes:             {type: :Pacote}
-	}
-
-	static prop inputs = {
-		lote:                {type: Lote,      null: false}
-		data_processamento:  {type: :Date,     null: false}
-		machos_de_primeira:  {type: :Integer,  null: false}
-		machos_de_segunda:   {type: :Integer,  null: false}
-		femeas_de_primeira:  {type: :Integer,  null: false}
-		femeas_de_segunda:   {type: :Integer,  null: false}
-		pintos_descartados:  {type: :Integer,  null: false}
-	}
-
-	static prop index = {
-		lote:                {type: Lote}
-		data_processamento:  {type: :Date}
-	}
-
-	static prop show = {
-		lote:                {type: Lote}
-		data_processamento:  {type: :Date}
-		machos_de_primeira:  {type: :Integer}
-		machos_de_segunda:   {type: :Integer}
-		femeas_de_primeira:  {type: :Integer}
-		femeas_de_segunda:   {type: :Integer}
-		pintos_descartados:  {type: :Integer}
-		pacotes:             {type: :Pacote}
-	}
+export global class Processamento < Model
 
 	get main_field
 		"LOTE {lote.codigo} - {data_processamento}"
 
-Processamento.setup()
+Processamento.setup(
+	plural_name: 'processamentos'
+	singular_name: 'processamento'
+	sync: true
+	fields:
+		id:                  :string
+		created_at:          :date
+		updated_at:          :date
+		data_processamento:  :date
+		machos_de_primeira:  :integer
+		machos_de_segunda:   :integer
+		femeas_de_primeira:  :integer
+		femeas_de_segunda:   :integer
+		pintos_descartados:  :integer
+
+	belongs_to:
+		lote:                :lote
+
+	has_many:
+		pacotes:             :pacote
+
+	form:
+		lote:                :lote
+		data_processamento:  :date
+		machos_de_primeira:  :integer
+		machos_de_segunda:   :integer
+		femeas_de_primeira:  :integer
+		femeas_de_segunda:   :integer
+		pintos_descartados:  :integer
+
+	index:
+		lote:                :lote
+		data_processamento:  :date
+
+	show:
+		lote:                :lote
+		data_processamento:  :date
+		machos_de_primeira:  :integer
+		machos_de_segunda:   :integer
+		femeas_de_primeira:  :integer
+		femeas_de_segunda:   :integer
+		pintos_descartados:  :integer
+		pacotes:             :pacote
+)

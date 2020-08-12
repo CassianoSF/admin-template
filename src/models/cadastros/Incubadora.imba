@@ -1,25 +1,23 @@
-export global class Incubadora < Record
-	static prop table_name = 'incubadoras'
-	static prop fields = {
-		id:                       {type: :String}
-		created_at:               {type: :Date}
-		updated_at:               {type: :Date}
-		codigo:                   {type: :String}
-	}
-
-	static prop inputs = {
-		codigo: {type: :String, null: false}
-	}
-
-	static prop index = {
-		codigo: {type: :String}
-	}
-
-	static prop show = {
-		codigo: {type: :String}
-	}
+export global class Incubadora < Model
 
 	get main_field
 		codigo
 
-Incubadora.setup()
+Incubadora.setup(
+	plural_name: 'incubadoras'
+	singular_name: 'incubadora'
+	fields:
+		id:                       :string
+		created_at:               :date
+		updated_at:               :date
+		codigo:                   :string
+
+	form:
+		codigo: :string
+
+	index:
+		codigo: :string
+
+	show:
+		codigo: :string
+	)

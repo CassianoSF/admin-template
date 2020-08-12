@@ -1,42 +1,39 @@
-export global class Integracao < Record
-	static prop table_name = 'integracoes'
-	static prop fields = {
-		id:                       {type: :String}
-		created_at:               {type: :Date}
-		updated_at:               {type: :Date}
-		quantidade_pintos:        {type: :Integer}
-		sexo_pinto:               {type: :String}
-		data_saida:               {type: :Date}
-	}
-
-	static prop belongs_to = {
-		lote:                     {type: Lote}
-	}
-
-	static prop has_many = {
-		pacotes: {type: :Pacotes}
-	}
-
-	static prop inputs = {
-		lote:                     {type: Lote,  null: false}
-		data_nascimento:          {type: :Date, null: false}
-	}
-
-	static prop index = {
-		lote:                     {type: Lote}
-		data_nascimento:          {type: :Date}
-	}
-
-	static prop show = {
-		lote:                     {type: Lote}
-		data_nascimento:          {type: :Date}
-		quantidade_pintos:        {type: :Integer}
-		sexo_pinto:               {type: :String}
-		data_saida:               {type: :Date}
-		pacotes:                  {type: :Pacotes}
-	}
+export global class Integracao < Model
 
 	get main_field
 		"LOTE {lote.codigo} - {data_nascimento}"
 
-Integracao.setup()
+Integracao.setup(
+	plural_name: 'integracoes'
+	singular_name: 'integracao'
+	sync: true
+	fields:
+		id:                       :string
+		created_at:               :date
+		updated_at:               :date
+		quantidade_pintos:        :integer
+		sexo_pinto:               :string
+		data_saida:               :date
+
+	belongs_to:
+		lote:                     :lote
+
+	has_many:
+		pacotes: :pacotes
+
+	form:
+		lote:                     :lote
+		data_nascimento:          :date
+
+	index:
+		lote:                     :lote
+		data_nascimento:          :date
+
+	show:
+		lote:                     :lote
+		data_nascimento:          :date
+		quantidade_pintos:        :integer
+		sexo_pinto:               :string
+		data_saida:               :date
+		pacotes:                  :pacotes
+)

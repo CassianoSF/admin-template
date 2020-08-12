@@ -1,14 +1,44 @@
+import {Confirm} from "../../components/ui/Confirm"
+
 export default tag Index
 	prop model
 	prop records = []
 
+	def mount
+		loadModels()
+		render()
+	
+	def loadModels
+		records = await model.all()
+		relations = {}
+		if model.belongs_to
+			for own rel, type of model.form
+				continue unless Model.models[type]
+				relations[rel] = await Model.models[type].class.all()
+		render()
+
+	def destroy
+		confirm.delete()
+		let index = records.indexOf(confirm)
+		records.splice(index, 1)
+		confirm = null
+		STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success_destroy)
+		render()
+
+	def confirmClose
+		confirm = false
+
+	def delete rec
+		confirm = rec
 
 	<self>
 		<header .content__title>
 			<h1> 
 				<a :click=(Router.go('/'))> 'Home'
-				<i[mx: 10px] .zmdi .zmdi-arrow-right>
-				I18n.t.models[model.table_name].plural_name
+				<i[mx: 10px] .zmdi .zmdi-chevron-right .zmdi-hc-lg>
+				I18n.t.models[model.plural_name].plural_name
+		if confirm
+			<Confirm :submit.destroy :close.confirmClose message=I18n.t.pages.crud.confirm>
 		<div .card .fadeIn>
 			<div .card-body>
 				<div .table-responsive>
@@ -16,11 +46,11 @@ export default tag Index
 						if records.length
 							<table .table>
 								<thead [background-color: rgba(255,255,255,0.1)]>
-									for own field, meta of model.index
+									for own field, type of model.index
 										if model.hasRelation(field)
-											<th> I18n.t.models[meta.type.table_name].human_name
+											<th> I18n.t.models[Model.models[type].class.plural_name].human_name
 										else
-											<th> I18n.t.models[model.table_name].fields[field]
+											<th> I18n.t.models[model.plural_name].fields[field]
 									<th>
 									<th>
 								<tbody>
@@ -31,7 +61,7 @@ export default tag Index
 													<td @click.emit('select', rec)> rec[field].main_field
 												else
 													<td @click.select(rec)> rec[field]
-											<td @click.emit('delete', rec) .table-action title="Excluir">
+											<td @click.delete(rec) .table-action title="Excluir">
 												<a .zmdi .zmdi-delete>
 											<td  @click.emit('edit', rec) .table-action title="Editar">
 												<a .zmdi .zmdi-edit>

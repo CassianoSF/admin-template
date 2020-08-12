@@ -1,6 +1,6 @@
 import Axios from "axios"
 
-export global class Api
+export default global class Api
 	static prop headers
 	static prop api
 
@@ -15,12 +15,17 @@ export global class Api
 			req.headers = JSON.parse(window.sessionStorage.getItem("headers"))
 			return req
 
-	static def login username, password
+		initSyncHandler()
+
+	static def initSyncHandler
+		Model.models
+
+	static def login email, password
 		api({
 			url: "/login"
 			method: 'POST'
 			data:
-				username: username
+				email: email
 				password: password  
 		})
 
