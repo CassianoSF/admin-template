@@ -3,7 +3,7 @@ export global class Incubacao < Model
 	get main_field
 		"LOTE {lote.codigo} - {data_incubacao}"
 
-Incubacao.setup(
+Incubacao.setup({
 	plural_name: 'incubacoes'
 	singular_name: 'incubacao'
 	sync: true
@@ -35,4 +35,11 @@ Incubacao.setup(
 		data_incubacao:           :date
 		posicao:                  :string
 		pacotes:                  :pacotes
-)
+
+	validates:
+		presence: [
+			'lote'
+			'data_incubacao'
+			'posicao'
+		]
+})

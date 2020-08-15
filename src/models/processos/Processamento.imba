@@ -3,7 +3,7 @@ export global class Processamento < Model
 	get main_field
 		"LOTE {lote.codigo} - {data_processamento}"
 
-Processamento.setup(
+Processamento.setup({
 	plural_name: 'processamentos'
 	singular_name: 'processamento'
 	sync: true
@@ -46,4 +46,15 @@ Processamento.setup(
 		femeas_de_segunda:   :integer
 		pintos_descartados:  :integer
 		pacotes:             :pacote
-)
+
+	valdates:
+		presense: [
+			'lote'
+			'data_processamento'
+			'machos_de_primeira'
+			'machos_de_segunda'
+			'femeas_de_primeira'
+			'femeas_de_segunda'
+			'pintos_descartados'
+		]
+})

@@ -24,14 +24,3 @@ export default tag CrudPacoteRecebimento
 		border-width: 2px 
 		border-color: rgba(255,255,255,0.5)
 		p:15px
-
-
-
-tag A
-	<self>
-		<slot>
-
-tag B
-	<self>
-		<A>
-			'oi'

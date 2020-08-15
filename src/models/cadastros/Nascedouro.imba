@@ -3,7 +3,7 @@ export global class Nascedouro < Model
 	get main_field
 		codigo
 
-Nascedouro.setup(
+Nascedouro.setup({
 	plural_name: 'nascedouros'
 	singular_name: 'nascedouro'
 	fields:
@@ -20,4 +20,7 @@ Nascedouro.setup(
 
 	show:
 		codigo: :string
-)
+
+	validates:
+		presence: ['codigo']
+})

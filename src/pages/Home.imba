@@ -1,4 +1,4 @@
-export tag Home
+export default tag Home
 	def changePage page
 		Router.go(page)
 

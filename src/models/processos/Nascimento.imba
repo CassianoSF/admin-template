@@ -3,7 +3,7 @@ export global class Nascimento < Model
 	get main_field
 		"LOTE {lote.codigo} - {data_nascimento}"
 
-Nascimento.setup(
+Nascimento.setup({
 	plural_name: 'nascimentos'
 	singular_name: 'nascimento'
 	sync: true
@@ -31,4 +31,8 @@ Nascimento.setup(
 		data_nascimento:          :date
 		lote:                     :lote
 		pacotes:                  :pacotes
-)
+
+	valdates:
+		presense: ['lote', 'data_nascimento']
+
+})

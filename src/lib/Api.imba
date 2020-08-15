@@ -1,18 +1,17 @@
 import Axios from "axios"
 
 export default global class Api
-	static prop headers
 	static prop api
 
 	static def init url
 		api = Axios.create({baseURL: url})
 
 		api.interceptors.response.use() do |res|
-			window.sessionStorage.setItem("headers", JSON.stringify(res.headers))
 			return res
 
 		api.interceptors.request.use() do |req| 
-			req.headers = JSON.parse(window.sessionStorage.getItem("headers"))
+			req.headers = {}
+			req.headers.token = window.sessionStorage.getItem("token")
 			return req
 
 		initSyncHandler()
@@ -30,8 +29,8 @@ export default global class Api
 		})
 
 	static def logout
-		window.sessionStorage.removeItem("headers")
 		window.sessionStorage.removeItem("user")
+		window.sessionStorage.removeItem("token")
 		STATE.user = null
 
 	static def get resource, params
@@ -48,9 +47,9 @@ export default global class Api
 			data: params
 		})
 
-	static def put resource, params
+	static def put resource, id, params
 		api({
-			url: "/{resource}"
+			url: "/{resource}/{id}"
 			method: 'PUT'
 			data: params
 		})
@@ -61,3 +60,11 @@ export default global class Api
 			method: 'DELETE'
 		})
 
+	static def hostReachable
+		api({
+			url: '/'
+			method: 'head'
+		})
+		.then(do |resp| 
+			return resp.status >= 200 and (resp.status <= 300 || resp.status == 304))
+		.catch(do return false)

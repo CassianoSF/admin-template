@@ -1,6 +1,6 @@
 import Dayjs from "dayjs"
 import Flatpickr from "flatpickr"
-import {Select} from "../../components/inputs/Select"
+import Select from "../../components/inputs/Select"
 
 export default tag Form
 	prop errors = {}
@@ -12,9 +12,12 @@ export default tag Form
 	prop flatpickers = []
 
 	def mount
-		target = await model.find(id)
+		if Router.to(model.singular_name + '/new')
+			target = model.new
+		elif Router.to(model.singular_name + '/edit')
+			let id = Router.path.slice(-1)[0]
+			target = await model.find(id)
 		mountDatePickers()
-		id = Router.path.slice(-1)
 		if model.belongs_to
 			for own rel, type of model.form
 				continue unless Model.models[type]
@@ -28,22 +31,17 @@ export default tag Form
 		I18n.t.models[Model.models[type].plural_name].human_name
 
 	def close
-		emit('close')
+		Router.go("/{model.singular_name}")
 
 	def submit
-		try
-			let save = await target.save()
-			console.log save
-			if (save)
-				STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success)
-				Router.go("/{model.singular_name}/{target.id}")
-			else
-				STATE.alerts.push(type: 'error', msg: I18n.t.pages.crud.error)
-				errors = target.errors
-		catch err
-			console.log(err)
-			STATE.alerts.push(type: 'error', msg: err)
-
+		let save = await target.save()
+		if (save)
+			STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success)
+			Router.go("/{model.singular_name}/{target.id}")
+		else
+			STATE.alerts.push(type: 'error', msg: I18n.t.pages.crud.error)
+			errors = target.errors or {}
+			render()
 
 	def mountDatePickers
 		for own field, el of date_pickers
@@ -59,7 +57,6 @@ export default tag Form
 			{option: rec.main_field, value: rec.id}
 
 	def unmount
-		emit('close')
 		flatpickers.map do $1.destroy()
 
 	def changeRelation e
@@ -80,7 +77,7 @@ export default tag Form
 		<div .card .fadeIn>
 			<div .card-body>
 				<form>
-					if errors.len
+					if errors.length
 						<div .alert .alert-danger>
 							for own field, msgs of errors
 								for error in msgs
@@ -91,11 +88,11 @@ export default tag Form
 							<div .col-md-4>
 								<div .form-group>
 									<label>
-										if Model.models[type]
+										if model.belongs_to[type]
 											relationName(type)
 										else
 											fieldName(field)
-									if Model.models[type]
+									if model.belongs_to[type]
 										<Select 
 											value=(target[field] or {}).id 
 											name=field 
@@ -107,7 +104,7 @@ export default tag Form
 										date_pickers[field] = <input bind=target[field]
 											.form-control 
 											.form-control-lg>
-									else
+									elif type == :string
 										<input 
 											value=(target[field] or '') 
 											:keyup.changeInput 
@@ -117,13 +114,38 @@ export default tag Form
 											.form-control-lg 
 											autocomplete="off"
 											placeholder=fieldName(field)>
+									elif type == :integer
+										<input 
+											value=(target[field] or '') 
+											:keyup.changeInput 
+											name=field 
+											type="number"
+											min="0" step="1"
+											.form-control 
+											.form-control-lg 
+											autocomplete="off"
+											placeholder=fieldName(field)>
+									elif type == :float or type == :decimal
+										<input 
+											value=(target[field] or '') 
+											:keyup.changeInput 
+											name=field 
+											type="number"
+											.form-control 
+											.form-control-lg 
+											autocomplete="off"
+											placeholder=fieldName(field)>
 
 									if errors[field]
-										<small .validation-error name="{field}-validation">
-											errors[field]
+										for error in errors[field]
+											<small .validation-error name="{field}-validation">
+												error
+
+				<PermissionForm bind:permissions=target.permissions> if model.form.permissions
+
 			<div .card-footer>
 				<div .btn-group .card-submit>
-					<button type="button" .btn .btn-danger :click.emit('close')>
+					<button type="button" .btn .btn-danger :click.close>
 						I18n.t.pages.crud.cancel
 					<button type="button" .btn .btn-primary :click.submit>
 						if target.id then I18n.t.pages.crud.save else I18n.t.pages.crud.add
@@ -137,3 +159,45 @@ export default tag Form
 			bottom: 20px
 			.btn
 				margin-left: 20px
+
+
+tag PermissionForm
+	def visit
+		if permissions and permissions.length == 0
+			for own _, model of Model.models 
+				permissions.push(Permission.new(
+					model: model.plural_name
+				))
+		render()
+
+	<self>
+		<.listview>
+			for permission in permissions
+				<.row [p: 1rem bg@hover: rgba(0,0,0,0.4)  border-bottom: 1px solid rgba(255,255,255,0.2);]>
+					<.col-md-2>
+						<div .listview__heading> I18n.t.models[permission.model].plural_name
+					<.col-md-2>
+						<label .custom-control .custom-checkbox .align-self-start>
+							<input bind=permission.see type="checkbox" .custom-control-input>
+							<span .custom-control-indicator>
+							<span .custom-control-description> I18n.t.models.permissions.fields.see
+					<.col-md-2>
+						<label .custom-control .custom-checkbox .align-self-start>
+							<input bind=permission.add type="checkbox" .custom-control-input>
+							<span .custom-control-indicator>
+							<span .custom-control-description> I18n.t.models.permissions.fields.add
+					<.col-md-2>
+						<label .custom-control .custom-checkbox .align-self-start>
+							<input bind=permission.edit type="checkbox" .custom-control-input>
+							<span .custom-control-indicator>
+							<span .custom-control-description> I18n.t.models.permissions.fields.edit
+					<.col-md-2>
+						<label .custom-control .custom-checkbox .align-self-start>
+							<input bind=permission.remove type="checkbox" .custom-control-input>
+							<span .custom-control-indicator>
+							<span .custom-control-description> I18n.t.models.permissions.fields.remove
+					<.col-md-2>
+						<label .custom-control .custom-checkbox .align-self-start>
+							<input bind=permission.access type="checkbox" .custom-control-input>
+							<span .custom-control-indicator>
+							<span .custom-control-description> I18n.t.models.permissions.fields.access

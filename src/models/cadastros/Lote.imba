@@ -3,7 +3,7 @@ export global class Lote < Model
 	get main_field
 		codigo
 
-Lote.setup(
+Lote.setup({
 	plural_name: 'lotes'
 	singular_name: 'lote'
 	fields:
@@ -20,4 +20,7 @@ Lote.setup(
 
 	show:
 		codigo: :string
-)
+
+	validates:
+		presence: ['codigo']
+})

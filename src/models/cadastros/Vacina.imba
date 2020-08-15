@@ -2,7 +2,7 @@ export global class Vacina < Model
 	get main_field
 		codigo
 
-Vacina.setup(
+Vacina.setup({
 	plural_name: 'vacinas'
 	singular_name: 'vacina'
 	fields:
@@ -22,4 +22,7 @@ Vacina.setup(
 	show:
 		codigo:                   :string
 		descricao:                :string
-)
+
+	validates:
+		presence: ['codigo', 'descricao']
+})

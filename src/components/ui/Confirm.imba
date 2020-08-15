@@ -1,4 +1,4 @@
-export tag Confirm
+export default tag Confirm
 	prop message
 	prop closing
 

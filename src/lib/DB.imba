@@ -1,7 +1,7 @@
 import Dexie from "dexie"
 import relationships from 'dexie-relationships'
 
-export global class DB
+export default global class DB
 	static prop database
 	static prop schema
 
@@ -16,7 +16,7 @@ export global class DB
 
 			schema[model.plural_name] = columns
 		
-		database.version(6).stores(schema)
+		database.version(1).stores(schema)
 
 
 		for own name, model of Model.models

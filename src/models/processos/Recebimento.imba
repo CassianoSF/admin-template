@@ -55,4 +55,18 @@ Recebimento.setup({
 		gema_dupla:               :integer
 		trincado:                 :integer
 		sujo_descartado:          :integer
+
+	validates:
+		presense: [
+			'lote'
+			'data_postura'
+			'data_entrada'
+			'total_de_ovos_enviados'
+			'ovos_limpos'
+			'ovos_de_cama'
+			'ovos_sujos_de_ninho'
+			'gema_dupla'
+			'trincado'
+			'sujo_descartado'
+		]
 })

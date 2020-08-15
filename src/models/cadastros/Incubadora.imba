@@ -3,7 +3,7 @@ export global class Incubadora < Model
 	get main_field
 		codigo
 
-Incubadora.setup(
+Incubadora.setup({
 	plural_name: 'incubadoras'
 	singular_name: 'incubadora'
 	fields:
@@ -20,4 +20,7 @@ Incubadora.setup(
 
 	show:
 		codigo: :string
-	)
+
+	validates:
+		presence: ['codigo']
+})

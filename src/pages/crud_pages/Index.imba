@@ -1,4 +1,4 @@
-import {Confirm} from "../../components/ui/Confirm"
+import Confirm from "../../components/ui/Confirm"
 
 export default tag Index
 	prop model
@@ -16,6 +16,15 @@ export default tag Index
 				continue unless Model.models[type]
 				relations[rel] = await Model.models[type].class.all()
 		render()
+
+	def add
+		Router.go("/{model.singular_name}/new")
+
+	def edit rec
+		Router.go("/{model.singular_name}/edit/" + rec.id)
+
+	def show rec
+		Router.go("/{model.singular_name}/" + rec.id)
 
 	def destroy
 		confirm.delete()
@@ -58,18 +67,18 @@ export default tag Index
 										<tr .main_table_tr>
 											for own field, meta of model.index
 												if model.hasRelation(field)
-													<td @click.emit('select', rec)> rec[field].main_field
+													<td @click.show(rec)> rec[field].main_field
 												else
-													<td @click.select(rec)> rec[field]
+													<td @click.show(rec)> rec[field]
 											<td @click.delete(rec) .table-action title="Excluir">
 												<a .zmdi .zmdi-delete>
-											<td  @click.emit('edit', rec) .table-action title="Editar">
+											<td  @click.edit(rec) .table-action title="Editar">
 												<a .zmdi .zmdi-edit>
 						else
 							<div[ta: center]> "Sem registros"
 
 			<div .card-footer>
 				<div .btn-group .card-submit>
-					<button :click.emit('add') .btn .btn-success>
+					<button :click.add .btn .btn-success>
 						<i .zmdi .zmdi-plus>
 						' Adicionar' 

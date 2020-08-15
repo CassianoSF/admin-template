@@ -1,6 +1,6 @@
 export global class Group < Model
 
-Group.setup {
+Group.setup({
 	plural_name: :groups
 	singular_name: :group
 	fields:
@@ -9,5 +9,12 @@ Group.setup {
 		updated_at:  :date
 		name:        :string
 	has_many:
-		permission:  :permission
-}
+		permissions: :permission
+	form:
+		name: :string
+		permissions: :permission
+	index:
+		name: :string
+	show:
+		name: :string
+})

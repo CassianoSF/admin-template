@@ -3,7 +3,7 @@ export global class Integracao < Model
 	get main_field
 		"LOTE {lote.codigo} - {data_nascimento}"
 
-Integracao.setup(
+Integracao.setup({
 	plural_name: 'integracoes'
 	singular_name: 'integracao'
 	sync: true
@@ -36,4 +36,8 @@ Integracao.setup(
 		sexo_pinto:               :string
 		data_saida:               :date
 		pacotes:                  :pacotes
-)
+
+	validates:
+		presense: ['lote', 'data_nascimento']
+
+})

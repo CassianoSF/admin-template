@@ -1,4 +1,4 @@
-export global class Router
+export default global class Router
 	static def init
 		current = window.location.hash.slice(1)
 		path = current.split('/')

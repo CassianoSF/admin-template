@@ -2,7 +2,7 @@ export global class Transferencia < Model
 	get main_field
 		"LOTE {lote.codigo} - {data_transferencia}"
 
-Transferencia.setup {
+Transferencia.setup({
 	plural_name: 'transferencias'
 	singular_name: 'transferencia'
 	sync: true
@@ -35,4 +35,13 @@ Transferencia.setup {
 		data_transferencia:       :date
 		ovos_claros_removidos:    :integer
 		pacotes:                  :pacote
-}
+
+	validates:
+		presense: [
+			'lote'
+			'data_transferencia'
+			'ovos_claros_removidos'
+			'pacotes'
+		]
+
+})

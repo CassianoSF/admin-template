@@ -1,4 +1,4 @@
-export tag Aside
+export default tag Aside
 	def changeTheme n
 		STATE.theme = n
 		imba.commit!

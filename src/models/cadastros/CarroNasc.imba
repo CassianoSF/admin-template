@@ -3,7 +3,7 @@ export global class CarroNasc < Model
 	get main_field
 		codigo
 
-CarroNasc.setup(
+CarroNasc.setup({
 	plural_name: 'carros_nasc'
 	singular_name: 'carro_nasc'
 	fields:
@@ -21,4 +21,6 @@ CarroNasc.setup(
 	show:
 		codigo: :string
 
-)
+	validates:
+		presence: ['codigo']
+})

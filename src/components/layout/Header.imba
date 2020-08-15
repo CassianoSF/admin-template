@@ -1,8 +1,8 @@
-import {Messages} from '../header/Messages'
-import {Notifications} from '../header/Notifications'
-import {Apps} from '../header/Apps'
+import Messages      from '../header/Messages'
+import Notifications from '../header/Notifications'
+import Apps          from '../header/Apps'
 
-export tag Header
+export default tag Header
 	prop open
 	
 	def mount

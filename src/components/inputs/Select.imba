@@ -1,6 +1,6 @@
 import {v4} from 'uuid'
 
-export tag Select
+export default tag Select
 	prop id = v4()
 	prop search
 	prop options = []

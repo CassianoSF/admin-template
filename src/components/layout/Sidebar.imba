@@ -1,4 +1,4 @@
-export tag Sidebar
+export default tag Sidebar
 	prop menu_items = [
 		{ 
 			url: '/'
@@ -81,11 +81,11 @@ export tag Sidebar
 			title: " Administrativo"
 			open: no
 			sub_menus: [{ 
-					url: '/usuarios'
+					url: '/user'
 					icon: "zmdi-account-circle"
 					title: " Usuários"
 				},{ 
-					url: '/grupos'
+					url: '/group'
 					icon: "zmdi-accounts"
 					title: " Grupos"
 				}
@@ -106,10 +106,8 @@ export tag Sidebar
 				else
 					item.open = false
 
-	def change_page page
-		Router.go(page)
-
 	def logout
+		toggleActions()
 		Api.logout()
 		Router.go('/login')
 
@@ -124,7 +122,7 @@ export tag Sidebar
 			item.open = !item.open
 			render()
 		else
-			change_page(item.url)
+			Router.go(item.url)
 
 	def toggleActions
 		actions = !actions
@@ -134,10 +132,6 @@ export tag Sidebar
 
 	def change_password
 		console.log 'change_password'
-
-	def logout
-		Api.logout()
-		Router.go('/login')
 
 	<self>
 		<div :click.close .sa-backdrop> if STATE.sidebar.toggled

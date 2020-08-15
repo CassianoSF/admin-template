@@ -1,4 +1,4 @@
-export tag Login
+export default tag Login
 	def mount
 		loading = false
 		show_intall_btn = false
@@ -33,7 +33,9 @@ export tag Login
 				invalid = true
 			else
 				window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
+				window.sessionStorage.setItem('token', res.data.token)
 				STATE.user = res.data.user
+				emit('login')
 				Router.go('/')
 
 		loading = false

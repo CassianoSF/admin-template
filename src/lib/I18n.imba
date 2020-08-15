@@ -1,5 +1,7 @@
-export global class I18n
+export default global class I18n
 	static prop pt_br = {
+		online: 'Sua conexão voltou!'
+		offline: 'Você perdeu sua conexão!'
 		select: "Selecione"
 		validation_error:
 			not_null: " não pode estar vazio"
@@ -23,10 +25,26 @@ export global class I18n
 				human_name: 'Usuário'
 				plural_name: 'Usuários'
 				fields: 
-					name: 'Nome'
+					group: 'Grupo'
+					username: 'Nome'
 					email: 'Email'
 					password: 'Senha'
 					repeat_password: 'Repita a senha'
+			groups:
+				human_name: 'Grupo'
+				plural_name: 'Grupos'
+				fields: 
+					name: 'Nome'
+			permissions:
+				human_name: 'Permissão'
+				plural_name: 'Permissões'
+				fields: 
+					model: 'Modelo'
+					edit: 'Atualizar'
+					add: 'Criar'
+					remove: 'Deletar'
+					access: 'Acessar'
+					see: 'Ver'
 			producoes:
 				human_name: 'Produção'
 				plural_name: 'Produções'
@@ -134,6 +152,32 @@ export global class I18n
 				fields:
 					codigo: 'Código'
 
+			vacinas:
+				human_name: 'Vacina'
+				plural_name: 'Vacinas'
+				fields:
+					codigo: 'Código'
+					descricao: 'Descrição'
+
+			pacotes:
+				human_name: 'Pacote'
+				plural_name: 'Pacotes'
+				fields:
+					armazenamento: 'Armazenamento'
+					incubacao: 'Incubação'
+					integracao: 'Integração'
+					nascimento: 'Nascimento'
+					processamento: 'Processamento'
+					recebimento: 'Recebimento'
+					transferencia: 'Transferência'
+					carro_inc: 'Carro de Incubação'
+					incubadora: 'Incubadora'
+					carro_nasc: 'Carro de Nascimento'
+					nascedouro: 'Nascedouro'
+					vacina_1: 'Vacina 1'
+					vacina_2: 'Vacina 2'
+
+
 	}
 
 	static prop en_us = {
@@ -163,4 +207,3 @@ export global class I18n
 
 	static def init reg
 		t = self[reg] or en_us
-

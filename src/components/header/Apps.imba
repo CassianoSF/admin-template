@@ -1,4 +1,4 @@
-export tag Apps
+export default tag Apps
 	<self.dropdown-menu.dropdown-menu-right.dropdown-menu--block role="menu">
 		<div.row.app-shortcuts>
 			<a.col-4.app-shortcuts__item>

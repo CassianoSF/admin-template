@@ -1,4 +1,4 @@
-export tag Messages
+export default tag Messages
 	<self .dropdown-menu .dropdown-menu-right .dropdown-menu--block>
 		<div .dropdown-header>
 			"Messages"

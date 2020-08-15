@@ -1,9 +1,9 @@
 export global class Pacote < Model
 
 
-Pacote.setup {
+Pacote.setup({
 	plural_name: 'pacotes'
-	singular_name: 'pacotes'
+	singular_name: 'pacote'
 	sync: true
 	fields:
 		id:            :string
@@ -26,4 +26,4 @@ Pacote.setup {
 		vacina_1:      :vacina
 		vacina_2:      :vacina
 		# integrado:     :integrado
-}
+})

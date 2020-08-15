@@ -1,9 +1,6 @@
 export global class Armazenamento < Model
-
 	get main_field
 		"LOTE {lote.codigo} - {data_processamento}"
-
-
 
 Armazenamento.setup({
 	plural_name: 'armazenamentos'
@@ -52,4 +49,16 @@ Armazenamento.setup({
 		comercio_gema_dupla:      :integer
 		ovos_quebrados:           :integer
 		pacotes:                  :pacotes
+
+	validates:
+		presence: [
+			'lote'
+			'data_processamento'
+			'ovos_incubaveis'
+			'ovos_de_risco'
+			'comercio_sujo'
+			'comercio_trincado'
+			'comercio_gema_dupla'
+			'ovos_quebrados'
+		]
 })

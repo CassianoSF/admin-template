@@ -1,4 +1,4 @@
-export tag Notifications
+export default tag Notifications
 	<self.dropdown-menu.dropdown-menu-right.dropdown-menu--block>
 		<div.dropdown-header> 
 			"Notifications"

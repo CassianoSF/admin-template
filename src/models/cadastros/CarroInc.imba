@@ -3,7 +3,7 @@ export global class CarroInc < Model
 	get main_field
 		codigo
 
-CarroInc.setup(
+CarroInc.setup({
 	plural_name: 'carros_inc'
 	singular_name: 'carro_inc'
 	fields:
@@ -20,4 +20,7 @@ CarroInc.setup(
 
 	show:
 		codigo: :string
-)
+
+	validates:
+		presence: ['codigo']
+})

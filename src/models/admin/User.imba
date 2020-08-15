@@ -9,9 +9,21 @@ User.setup {
 		updated_at:  :date
 		username:    :string
 		email:       :string
-	inputs:
+	belongs_to:
+		group: :group
+	form:
 		username:        :string
 		email:           :string
 		password:        :string
 		repeat_password: :string
+		group:           :group
+
+	validates:
+		presence: [
+			'username'
+			'email'
+			'password'
+			'repeat_password'
+			'group'
+		]
 }
