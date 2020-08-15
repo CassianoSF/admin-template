@@ -17,6 +17,14 @@ User.setup {
 		password:        :string
 		repeat_password: :string
 		group:           :group
+	index:
+		username:        :string
+		email:           :string
+		group:           :group
+	show:
+		username:        :string
+		email:           :string
+		group:           :group
 
 	validates:
 		presence: [

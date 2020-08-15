@@ -9,11 +9,46 @@
     "dexie": "^3.0.1",
     "dexie-relationships": "^1.2.11",
     "flatpickr": "3.1.5",
-    "imba": "^2.0.0-alpha.74",
+    "imba": "^2.0.0-alpha.83",
     "js-convert-case": "^4.0.1",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "imba-snowpack": "^0.0.5"
+    "imba-snowpack": "^0.0.8"
+  },
+  "snowpack": {
+    "mount": {
+      "src": "/static",
+      "public": "/"
+    },
+    "plugins": [
+      [
+        "imba-snowpack",
+        {
+          "entrypoints": ["app-root"]
+        }
+      ]
+    ],
+    "installOptions": {
+      "sourceMap": true
+    },
+    "install": [
+      "imba",
+      "axios",
+      "dayjs",
+      "dexie",
+      "dexie-relationships",
+      "flatpickr",
+      "uuid",
+      "js-convert-case"
+    ],
+    "devOptions": {
+      "minify": false,
+      "open": "none",
+      "bundle": true
+    },
+    "buildOptions": {
+      "minify": true
+    }
   }
 }
