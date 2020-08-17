@@ -6,9 +6,9 @@ export default tag Crud
 	prop model
 
 	<self .fadeIn>
-		if Router.to(model.singular_name + '/[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}')
-			<Show model=model>
-		elif Router.to(model.singular_name + '/(new|edit)')
+		if Router.to('/(new|edit)')
 			<Form model=model>
+		elif Router.to('/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}')
+			<Show model=model>
 		else
 			<Index model=model>

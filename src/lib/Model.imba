@@ -125,6 +125,7 @@ export default global class Model
 		errors = null
 		let response = await Api.post(plural_name, {[singular_name]: self})
 			.catch(handleResponseErrors.bind(this))
+		console.log response
 		return false if errors
 		saveResponse(response.data)
 

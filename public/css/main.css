@@ -13313,6 +13313,29 @@ ul.jqtree-tree ul.jqtree_common {
 	animation-name: fadeOutUp
 }
 
+@-webkit-keyframes moveUp {
+	0% {
+	}
+	to {
+		-webkit-transform: translate3d(0, -70px, 0);
+		transform: translate3d(0, -70px, 0)
+	}
+}
+
+@keyframes moveUp {
+	0% {
+	}
+	to {
+		-webkit-transform: translate3d(0, -70px, 0);
+		transform: translate3d(0, -70px, 0)
+	}
+}
+
+.moveUp {
+	-webkit-animation-name: moveUp;
+	animation-name: moveUp
+}
+
 @-webkit-keyframes fadeOutUpBig {
 	0% {
 		opacity: 1

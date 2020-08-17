@@ -23,13 +23,13 @@ export default tag Login
 		let res = await Api.login(email, password).catch do |err|
 			console.error err
 			if err.response
-				STATE.alerts.push(type: 'error', msg: 'Ocorreu um erro!')
+				STATE.alerts.push(type: 'danger', msg: 'Ocorreu um erro!')
 			else
-				STATE.alerts.push(type: 'error', msg: 'Não foi possível conectar com o servidor!')
+				STATE.alerts.push(type: 'danger', msg: 'Não foi possível conectar com o servidor!')
 		if res.data
 			if res.data.error
 				error = res.data.error
-				STATE.alerts.push(type: 'error', msg: res.data.error)
+				STATE.alerts.push(type: 'danger', msg: res.data.error)
 				invalid = true
 			else
 				window.sessionStorage.setItem('user', JSON.stringify(res.data.user))
@@ -74,13 +74,8 @@ export default tag Login
 
 	css .login
 		min-height: 100vh
-		display: -ms-flexbox
 		display: flex
-		-webkit-box-align: center
-		-ms-flex-align: center
 		align-items: center
-		-webkit-box-pack: center
-		-ms-flex-pack: center
 		justify-content: center
 		padding-top: 1.2rem
 
@@ -89,7 +84,6 @@ export default tag Login
 		max-width: 330px
 		width: 100%
 		padding: 1rem
-		-webkit-animation-name: fadeInUp
 		animation-name: fadeInUp
 		animation-duration: .3s
 		animation-fill-mode: both

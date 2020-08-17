@@ -37,8 +37,7 @@ import Crud            from './pages/Crud'
 import Sidebar         from './components/layout/Sidebar'
 import Header          from './components/layout/Header'
 import Aside           from './components/layout/Aside'
-import Alerts          from './components/ui/Alerts'
-
+import Alert          from './components/ui/Alert'
 
 tag App
 	def build
@@ -65,7 +64,8 @@ tag App
 
 	<self .app [background-image@md: {themeBg()} background-color: gray]>
 		<.main>
-			<Alerts>
+			for data in STATE.alerts
+				<Alert data=data alerts=STATE.alerts>
 			if Router.current == '/login'
 				<Login :login.initSync()>
 			else

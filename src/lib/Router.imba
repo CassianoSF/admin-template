@@ -1,5 +1,6 @@
 export default global class Router
-	static def init
+	static def init app
+		app = app 
 		current = window.location.hash.slice(1)
 		path = current.split('/')
 		window.addEventListener('popstate') do |e|

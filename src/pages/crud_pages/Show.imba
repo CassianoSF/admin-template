@@ -8,6 +8,7 @@ export default tag Show
 	def mount
 		id = Router.path.slice(-1)
 		target = await model.find(id)
+		console.log target
 		render()
 
 	def destroy
@@ -71,32 +72,27 @@ tag PermissionShow
 						<.row [p: 1rem border-bottom: 1px solid rgba(255,255,255,0.2)]>
 							<.col-md-2>
 								<div .listview__heading> I18n.t.models[permission.model].plural_name
-							<.col-md-1>
+							<.col-md-2>
 								<label .custom-control .custom-checkbox .align-self-start>
 									<input disabled bind=permission.see type="checkbox" .custom-control-input>
 									<span .custom-control-indicator>
 									<span .custom-control-description> I18n.t.models.permissions.fields.see
-							<.col-md-1>
+							<.col-md-2>
 								<label .custom-control .custom-checkbox .align-self-start>
 									<input disabled bind=permission.add type="checkbox" .custom-control-input>
 									<span .custom-control-indicator>
 									<span .custom-control-description> I18n.t.models.permissions.fields.add
-							<.col-md-1>
+							<.col-md-2>
 								<label .custom-control .custom-checkbox .align-self-start>
 									<input disabled bind=permission.edit type="checkbox" .custom-control-input>
 									<span .custom-control-indicator>
 									<span .custom-control-description> I18n.t.models.permissions.fields.edit
-							<.col-md-1>
+							<.col-md-2>
 								<label .custom-control .custom-checkbox .align-self-start>
 									<input disabled bind=permission.remove type="checkbox" .custom-control-input>
 									<span .custom-control-indicator>
 									<span .custom-control-description> I18n.t.models.permissions.fields.remove
-							<.col-md-1>
-								<label .custom-control .custom-checkbox .align-self-start>
-									<input disabled bind=permission.access type="checkbox" .custom-control-input>
-									<span .custom-control-indicator>
-									<span .custom-control-description> I18n.t.models.permissions.fields.access
-							<.col-md-1>
+							<.col-md-2>
 								<label .custom-control .custom-checkbox .align-self-start>
 									<input disabled bind=permission.access type="checkbox" .custom-control-input>
 									<span .custom-control-indicator>

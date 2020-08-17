@@ -1,47 +1,56 @@
-export default tag Alerts
+export default tag Alert
+	prop life
 
-	def render
-		<self>
-			for data, i in STATE.alerts
-				<Alert[top: {20 + i*70}px] data=data>
-
-tag Alert
 	def mount
-		fade_out = false
+		data.bounce_in = true
+		life = 0
+		top = 70 * index + 20
+		$interval = setInterval(tick.bind(self), 375)
 		render()
-		setTimeout(&, 3000) do
-			fade_out = true
-			render()
-			setTimeout(&, 500) do 
-				STATE.alerts.shift()
+		
+	def tick
+		life += 375
+		top = 70 * index  + 20
+		let first = alerts.filter(do(d) !d.dead)[0]
+		if first != data and first.fade_out
+			data.move_up = true
+		else
+			data.move_up = false
+		
+		if life >= 750
+			data.bounce_in = false
+		if top == 20
+			data.start ||= life
+		if life > data.start + 2000
+			data.fade_out ||= life
+		if life > data.fade_out + 750
+			data.dead = true
+			clearInterval($interval)
+			self.remove()
 
-	def close
-		fade_out = true
 		render()
-
+			
+	get index
+		alerts.filter(do(d) !d.dead).indexOf(data)
+				
 	def render
-		<self 
+		return unless top
+		<self [top: {top}px]
 			.alert 
 			.alert--notify 
 			.animated
-			.alert-dismissible 
 			.alert-top-right
-			.fadeOutRight=(fade_out)
-			.bounceIn
-			.alert-danger=(data.type == 'error')
-			.alert-success=(data.type == 'success')
-			.alert-info=(data.type == 'info')
-			.alert-warning=(data.type == 'warning')
+			.fadeOutRight=(data.fade_out)
+			.moveUp=(data.move_up)
+			.bounceIn=(data.bounce_in)
+			.{"alert-{data.type}"}
 
 		>
 			<span>
 				data.msg
-			<a>
-				<button .close .btn .btn-sm .btn-light type="button" >
-					<span :click.close>
-						"×"
 
 	css .alert 
+		color: #fff
 		padding: 18px 24px
 		margin-bottom: 1rem
 		border: 0 solid transparent
@@ -81,42 +90,11 @@ tag Alert
 		background-color: rgba(220, 53, 69, .95)
 		border-color: #dc3545
 
-	css .alert-heading 
-		font-weight: 600
-		font-size: 1.1rem
-		margin: .15rem 0 1rem
-		color: inherit
-
-	css .alert-dismissible 
-		.close 
-			margin-left: 2rem
-
-	css .close
-		span@not(.sr-only)
-			transition: opacity .3s
-			background-color: rgba(255, 255, 255, .2)
-			opacity: .8
-			line-height: 17px
-			height: 19px
-			width: 19px
-			border-radius: 50%
-			font-size: 1rem
-			display: block
-			font-weight: 600
-			color: #fff
-	
-	css.close@hover
-		opacity: 1
-
 	css .alert--notify
 		box-shadow: 0 3px 10px rgba(0, 0, 0, .3)
 
 	css .alert--notify@not(.alert-info)@not(.alert-success)@not(.alert-warning)@not(.alert-danger)
 		background-color: rgba(0, 0, 0, .96)
-
-	css .close
-		transition: opacity .3s
-		cursor: pointer
 
 	css .alert-top, .alert-top-left, .alert-top-right, .alert-bottom, .alert-bottom-left, .alert-bottom-right
 		display: inline-block

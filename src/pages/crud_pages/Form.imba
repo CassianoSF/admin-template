@@ -39,7 +39,7 @@ export default tag Form
 			STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success)
 			Router.go("/{model.singular_name}/{target.id}")
 		else
-			STATE.alerts.push(type: 'error', msg: I18n.t.pages.crud.error)
+			STATE.alerts.push(type: 'danger', msg: I18n.t.pages.crud.error)
 			errors = target.errors or {}
 			render()
 
