@@ -14,7 +14,10 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "imba-snowpack": "^0.0.8"
+    "@cypress/webpack-preprocessor": "^5.4.4",
+    "cypress": "^4.12.1",
+    "imba-snowpack": "^0.0.8",
+    "webpack": "^4.44.1"
   },
   "snowpack": {
     "mount": {
@@ -25,7 +28,9 @@
       [
         "imba-snowpack",
         {
-          "entrypoints": ["app-root"]
+          "entrypoints": [
+            "app-root"
+          ]
         }
       ]
     ],

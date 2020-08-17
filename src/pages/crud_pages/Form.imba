@@ -48,8 +48,11 @@ export default tag Form
 			continue if flatpickers[field]
 			flatpickers[field] = Flatpickr(el, {
 				enableTime: true,
-				dateFormat: 'd/m/Y - h:i K',
-				defaultDate: Dayjs().format('DD/MM/YYYY - hh:mm')
+				altInput: true,
+				dateFormat: 'Z',
+				altFormat: 'd/m/Y - h:i K',
+				defaultDate: Date.new().toJSON()
+				parseDate: do |date| Date.new(date)
 			})
 
 	def selectOptions relation
@@ -172,7 +175,7 @@ tag PermissionForm
 
 	<self>
 		<.listview>
-			for permission in permissions
+			for permission in (permissions or []).sort(do(a, b) a.model.localeCompare(b.model))
 				<.row [p: 1rem bg@hover: rgba(0,0,0,0.4)  border-bottom: 1px solid rgba(255,255,255,0.2);]>
 					<.col-md-2>
 						<div .listview__heading> I18n.t.models[permission.model].plural_name

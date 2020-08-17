@@ -1,3 +1,4 @@
+import Dayjs from 'dayjs'
 import Confirm from "../../components/ui/Confirm"
 import ConvertCase from 'js-convert-case'
 
@@ -8,7 +9,6 @@ export default tag Show
 	def mount
 		id = Router.path.slice(-1)
 		target = await model.find(id)
-		console.log target
 		render()
 
 	def destroy
@@ -52,6 +52,9 @@ export default tag Show
 							if Model.models[type]
 								<div .card-title> target[field].main_field
 								<p .card-subtitle> I18n.t.models[Model.models[type].plural_name].human_name
+							elif type == :date
+								<div .card-title> Dayjs.new(target[field]).format('DD/MM/YYYY - hh:mm')
+								<p .card-subtitle> I18n.t.models[model.plural_name].fields[field]
 							else
 								<div .card-title> target[field]
 								<p .card-subtitle> I18n.t.models[model.plural_name].fields[field]

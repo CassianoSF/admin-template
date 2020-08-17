@@ -1,3 +1,4 @@
+import Dayjs from "dayjs"
 import Confirm from "../../components/ui/Confirm"
 
 export default tag Index
@@ -65,9 +66,11 @@ export default tag Index
 								<tbody>
 									for rec in records
 										<tr .main_table_tr>
-											for own field, meta of model.index
+											for own field, type of model.index
 												if model.hasRelation(field)
 													<td @click.show(rec)> rec[field].main_field
+												elif type == :date
+													<td @click.show(rec)> Dayjs.new(rec[field]).format('DD/MM/YYYY - hh:mm')
 												else
 													<td @click.show(rec)> rec[field]
 											<td @click.delete(rec) .table-action title="Excluir">
