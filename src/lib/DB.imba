@@ -22,3 +22,6 @@ export default global class DB
 		for own name, model of Model.models
 			self[model.plural_name] = database[model.plural_name]
 
+	static def delete
+		database.delete()
+

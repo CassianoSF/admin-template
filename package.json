@@ -1,7 +1,9 @@
 {
   "scripts": {
     "dev": "npx snowpack dev",
-    "build": "npx snowpack build"
+    "build": "npx snowpack build",
+    "test": "imba cypress/run-test.imba",
+    "start": "imba cypress/open-test.imba"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -9,15 +11,13 @@
     "dexie": "^3.0.1",
     "dexie-relationships": "^1.2.11",
     "flatpickr": "3.1.5",
-    "imba": "^2.0.0-alpha.83",
+    "imba": "^2.0.0-alpha.84",
     "js-convert-case": "^4.0.1",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@cypress/webpack-preprocessor": "^5.4.4",
     "cypress": "^4.12.1",
-    "imba-snowpack": "^0.0.8",
-    "webpack": "^4.44.1"
+    "imba-snowpack": "^0.0.8"
   },
   "snowpack": {
     "mount": {
@@ -55,5 +55,9 @@
     "buildOptions": {
       "minify": true
     }
+  },
+  "cypress": {
+    "viewportWidth": 1280,
+    "viewportHeight": 1024
   }
 }

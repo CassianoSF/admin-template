@@ -3,3 +3,4 @@ web_modules/
 build/
 yarn-error.log
 yarn.lock
+cypress/videos/

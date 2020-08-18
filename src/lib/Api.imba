@@ -1,4 +1,5 @@
 import Axios from "axios"
+import {Sync} from "./Sync"
 
 export default global class Api
 	static prop api
@@ -14,11 +15,6 @@ export default global class Api
 			req.headers.token = window.sessionStorage.getItem("token")
 			return req
 
-		initSyncHandler()
-
-	static def initSyncHandler
-		Model.models
-
 	static def login email, password
 		api({
 			url: "/login"
@@ -31,6 +27,10 @@ export default global class Api
 	static def logout
 		window.sessionStorage.removeItem("user")
 		window.sessionStorage.removeItem("token")
+		window.sessionStorage.removeItem("last_sync")
+		Sync.unschedule()
+		DB.delete()
+
 		STATE.user = null
 
 	static def get resource, params

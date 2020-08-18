@@ -1,4 +1,5 @@
 import {v4} from "uuid"
+import {Sync} from './Sync'
 
 export default global class Model
 	static def setup(configs = {})

@@ -51,13 +51,16 @@ tag App
 		Router.init()
 		I18n.init('pt_br')
 		Router.go('/login') unless STATE.user
-		DB.init()
 		Api.init('http://localhost:3000')
 		# Api.init('https://arcane-scrubland-94321.herokuapp.com')
 
-	def initSync
-		Sync.init()
+		if STATE.user
+			DB.init() 
+			Sync.init()
 
+	def initSync
+		DB.init()
+		Sync.init()
 
 	def themeBg
 		"url('/img/bg/{STATE.theme}.jpg')"
