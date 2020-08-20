@@ -7,7 +7,7 @@ export default tag Show
 	prop model
 
 	def mount
-		id = Router.path.slice(-1)
+		id = Router.path.slice(-1)[0]
 		target = await model.find(id)
 		render()
 
@@ -48,16 +48,16 @@ export default tag Show
 			if target
 				for own field, type of model.show
 					<div .col-md-4>
-						<div[p: 20px] .card>
+						<div [p: 20px] .card>
 							if Model.models[type]
-								<div .card-title> target[field].main_field
-								<p .card-subtitle> I18n.t.models[Model.models[type].plural_name].human_name
+								<div .card-title> I18n.t.models[Model.models[type].plural_name].human_name
+								<p .card-subtitle> target[field].main_field
 							elif type == :date
-								<div .card-title> Dayjs.new(target[field]).format('DD/MM/YYYY - hh:mm')
-								<p .card-subtitle> I18n.t.models[model.plural_name].fields[field]
+								<div .card-title> I18n.t.models[model.plural_name].fields[field]
+								<p .card-subtitle> Dayjs.new(target[field]).format('DD/MM/YYYY - hh:mm')
 							else
-								<div .card-title> target[field]
-								<p .card-subtitle> I18n.t.models[model.plural_name].fields[field]
+								<div .card-title> I18n.t.models[model.plural_name].fields[field]
+								<p .card-subtitle> target[field]
 
 			if (target or {}).permissions
 				<div .col-12>

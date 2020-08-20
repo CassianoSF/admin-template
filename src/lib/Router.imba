@@ -13,5 +13,10 @@ export default global class Router
 		path = current.split('/')
 		window.history.pushState("/#{url}", "/#{url}", "/#{url}")
 
+	static def goBack
+		window.history.back()
+		current = window.location.hash.slice(1)
+		path = current.split('/')
+
 	static def to url
 		RegExp(url).exec(current)

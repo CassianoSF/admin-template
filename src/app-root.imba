@@ -1,3 +1,5 @@
+import './styles'
+
 # LIBS
 import I18n            from './lib/I18n'
 import Router          from './lib/Router'
@@ -29,9 +31,9 @@ import {Transferencia} from './models/processos/Transferencia'
 import {Pacote}        from './models/Pacote'
 
 # PAGES
-import Login           from './pages/Login'
-import Home            from './pages/Home'
-import Crud            from './pages/Crud'
+import Login           from './views/Login'
+import Home            from './views/Home'
+import Crud            from './views/Crud'
 
 # COMPONENTS
 import Sidebar         from './components/layout/Sidebar'
@@ -111,10 +113,8 @@ tag App
 
 	css .main
 		position: relative
-		overflow-x: hidden
 
 	css .content
 		min-height: 100vh
-		overflow-y: hidden
 
 imba.mount <App>

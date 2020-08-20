@@ -22,7 +22,7 @@
   "snowpack": {
     "mount": {
       "src": "/static",
-      "public": "/"
+      "static": "/"
     },
     "plugins": [
       [
@@ -34,9 +34,6 @@
         }
       ]
     ],
-    "installOptions": {
-      "sourceMap": true
-    },
     "install": [
       "imba",
       "axios",
@@ -47,14 +44,12 @@
       "uuid",
       "js-convert-case"
     ],
+    "installOptions": {},
     "devOptions": {
-      "minify": false,
-      "open": "none",
-      "bundle": true
+      "out": "public",
+      "open": "none"
     },
-    "buildOptions": {
-      "minify": true
-    }
+    "buildOptions": {}
   },
   "cypress": {
     "viewportWidth": 1280,

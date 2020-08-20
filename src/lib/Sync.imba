@@ -14,14 +14,13 @@ class Synchronizer
 			STATE.alerts.push(type: 'warning', msg: I18n.t.offline)
 			imba.commit!
 
-		interal = setInterval(run.bind(this), 10 * 1000)
+		interal = setInterval(run.bind(this), 3 * 1000)
 		run()
 
 	def unschedule
 		clearInterval(interal)
 
 	def run
-
 		let online = await Api.hostReachable()
 		return if not online
 
@@ -29,7 +28,6 @@ class Synchronizer
 		last_update = Date.new(last_update.data).toJSON()
 		let last_sync = window.sessionStorage.getItem('last_sync')
 		return if last_sync and last_update <= last_sync
-
 
 		for own name, model of models
 			let records = []
@@ -56,7 +54,7 @@ class Synchronizer
 			limit: 100
 			offset: 100 * current_page
 		})
-		model.table.bulkPut(res.data.records)
+		model.table.bulkPut(res.data.records).then(do imba.commit!)
 		return if current_page * 100 > res.data.total
 		syncTable(model, current_page + 1)
 

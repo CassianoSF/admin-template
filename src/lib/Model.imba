@@ -2,7 +2,7 @@ import {v4} from "uuid"
 import {Sync} from './Sync'
 
 export default global class Model
-	static def setup(configs = {})
+	static def setup configs = {}
 		throw 'setup must have plural_name' unless configs.plural_name
 		throw 'setup must have singular_name' unless configs.singular_name
 		Model.models ||= {}
@@ -13,12 +13,9 @@ export default global class Model
 			Model.models[configs.singular_name][config] = configs[config] or {}
 			self[config] = configs[config] or {}
 
-		Model.models[configs.singular_name].plural_name   = configs.plural_name
-		Model.models[configs.singular_name].singular_name = configs.singular_name
-		Model.models[configs.singular_name].sync          = configs.sync
-		self.plural_name   = configs.plural_name
-		self.singular_name = configs.singular_name
-		self.sync          = configs.sync
+		for config in ['plural_name', 'singular_name', 'sync']
+			Model.models[configs.singular_name][config] = configs[config]
+			self[config] = configs[config]
 
 	static get table
 		DB[plural_name]
@@ -48,7 +45,7 @@ export default global class Model
 		return self.new(rec)
 
 	static def all
-		table.with(includes).then do |records|
+		table.orderBy('updated_at').reverse().with(includes).then do |records|
 			for rec in records
 				ormRecord(rec)
 
@@ -109,7 +106,6 @@ export default global class Model
 		validate()
 		return false if errors
 		self.constructor.sync ? updateLocal() : updateRemote()
-
 
 	def createLocal
 		self.id ||= v4()

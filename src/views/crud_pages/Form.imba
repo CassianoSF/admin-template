@@ -31,7 +31,7 @@ export default tag Form
 		I18n.t.models[Model.models[type].plural_name].human_name
 
 	def close
-		Router.go("/{model.singular_name}")
+		Router.goBack()
 
 	def submit
 		let save = await target.save()
