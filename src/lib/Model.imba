@@ -134,7 +134,7 @@ export default global class Model
 		saveResponse(response.data)
 
 	def handleResponseErrors err
-		if err.response.statusText is "Unprocessable Entity"
+		if err.response and err.response.statusText is "Unprocessable Entity"
 			errors = err.response.data
 		else
 			throw err

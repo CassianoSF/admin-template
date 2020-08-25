@@ -1,16 +1,19 @@
 import Dayjs from "dayjs"
 import Confirm from "../../components/ui/Confirm"
+import Collapse from "../../components/ui/Collapse"
 import Pagination from "../../components/table/Pagination"
+import Select from "../../components/inputs/Select"
 
 export default tag Index
 	prop model
 	prop records = []
 	prop pagination = {}
-	prop query = {}
+	prop order
+	prop reverse
+	prop open_filter = false
 
-	def visit
-		await execQuery()
-		render()
+	# def visit
+	# 	execQuery()
 
 	def mount
 		pagination = {
@@ -19,22 +22,27 @@ export default tag Index
 			page_count: 0
 			current_page: 0
 		}
-		await execQuery()
-		render()
+		execQuery()
 
 	def execQuery
 		pagination.record_count = await model.table.count()
 		pagination.page_count = Math.ceil(pagination.record_count / 50)
-		let data = await model.table
-			.offset(pagination.current_page * 50)
-			.limit(50)
-			.with(model.includes)
+		let query = model.table.orderBy(order)
+		query = query.reverse() if reverse
+		query = query.offset(pagination.current_page * 50).limit(50)
+		let data = await query.with(model.includes)
 		records = data.map do |rec| model.ormRecord(rec)
+		render()
+
+	def sortBy field
+		if field == order
+			reverse = !reverse
+		order = field
+		execQuery()
 
 	def changePage e
 		pagination.current_page = e.detail
-		await execQuery()
-		render()
+		execQuery()
 
 	def add
 		Router.go("/{model.singular_name}/new")
@@ -59,6 +67,9 @@ export default tag Index
 	def delete rec
 		confirm = rec
 
+	def toggleFilter
+		open_filter = !open_filter
+
 	<self>
 		<header .content__title>
 			<h1> 
@@ -69,6 +80,14 @@ export default tag Index
 			<Confirm :submit.destroy :close.confirmClose message=I18n.t.pages.crud.confirm>
 		<div .card>
 			<div .card-body>
+				<div .btn-group>
+					<button :click.toggleFilter .btn .btn-dark>	
+						<i .zmdi .zmdi-filter-list>
+						' Filtros'
+					<button :click.add .btn .btn-success>
+						<i .zmdi .zmdi-plus>
+						' Adicionar' 
+				<Filters model=model open=open_filter>
 				<div .table-responsive>
 					<Pagination data=pagination :change.changePage>
 					if records.length
@@ -77,34 +96,34 @@ export default tag Index
 								<tr>
 									for own field, type of model.index
 										if model.hasRelation(field)
-											<th> I18n.t.models[Model.models[type].class.plural_name].human_name
+											<th :click.sortBy("{field}_id")> 
+												I18n.t.models[Model.models[type].class.plural_name].human_name + ' '
+												if order == "{field}_id"
+													<a .zmdi .zmdi-hc-lg .{reverse ? "zmdi-chevron-down" : "zmdi-chevron-up"}>
+
 										else
-											<th> I18n.t.models[model.plural_name].fields[field]
+											<th :click.sortBy(field)> 
+												I18n.t.models[model.plural_name].fields[field] + ' '
+												if order == field
+													<a .zmdi .zmdi-hc-lg .{reverse ? "zmdi-chevron-down" : "zmdi-chevron-up"}>
 									<th>
 									<th>
 							<tbody>
 								for rec in records
-
-									<tr .main_table_tr>
+									<tr>
 										for own field, type of model.index
 											if model.hasRelation(field)
-												<td @click.show(rec)> rec[field].main_field
+												<td @click.show(rec)> rec[field].main_field or ''
 											elif type == :date
-												<td @click.show(rec)> Dayjs.new(rec[field]).format('DD/MM/YYYY - hh:mm')
+												<td @click.show(rec)> Dayjs.new(rec[field] or 'Not Valid').format('DD/MM/YYYY - hh:mm')
 											else
-												<td @click.show(rec)> rec[field]
+												<td @click.show(rec)> rec[field] or ''
 										<td @click.delete(rec) .table-action title="Excluir">
 											<a .zmdi .zmdi-delete>
 										<td  @click.edit(rec) .table-action title="Editar">
 											<a .zmdi .zmdi-edit>
 					else
 						<div[ta: center]> "Sem registros"
-
-			<div .card-footer>
-				<div .btn-group .card-submit>
-					<button :click.add .btn .btn-success>
-						<i .zmdi .zmdi-plus>
-						' Adicionar' 
 
 	css .table
 		width: 100%
@@ -149,3 +168,22 @@ export default tag Index
 	css .table-action@hover
 		background-color: rgba(255,255,255,0.2)
 		color: rgb(0,0,0)
+
+
+tag Filters
+	prop model
+
+	<self>
+		<Collapse open=(open)>
+			<hr>
+			<.row>
+				for own field, type of model.index
+					<.col-md-2>
+						<div .form-group>
+							if model.hasRelation(field)
+								I18n.t.models[Model.models[type].class.plural_name].human_name
+							else
+								I18n.t.models[model.plural_name].fields[field]
+					<.col-md-5>
+						<Select>
+					<.col-md-5>

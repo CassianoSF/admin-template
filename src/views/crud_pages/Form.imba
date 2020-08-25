@@ -1,6 +1,6 @@
 import Dayjs from "dayjs"
-import Flatpickr from "flatpickr"
 import Select from "../../components/inputs/Select"
+import DatePicker from "../../components/inputs/DatePicker"
 
 export default tag Form
 	prop errors = {}
@@ -8,8 +8,6 @@ export default tag Form
 	prop model
 	prop target = {}
 	prop relations = {}
-	prop date_pickers = []
-	prop flatpickers = []
 
 	def mount
 		if Router.to(model.singular_name + '/new')
@@ -17,7 +15,7 @@ export default tag Form
 		elif Router.to(model.singular_name + '/edit')
 			let id = Router.path.slice(-1)[0]
 			target = await model.find(id)
-		mountDatePickers()
+
 		if model.belongs_to
 			for own rel, type of model.form
 				continue unless Model.models[type]
@@ -34,33 +32,28 @@ export default tag Form
 		Router.goBack()
 
 	def submit
-		let save = await target.save()
+		loading = true
+		let save
+		try
+			save = await target.save()
+		catch err
+			STATE.alerts.push(type: 'danger', msg: err.message)
+			loading = false
+			render()
+			return
+
 		if (save)
 			STATE.alerts.push(type: 'success', msg: I18n.t.pages.crud.success)
 			Router.go("/{model.singular_name}/{target.id}")
 		else
 			STATE.alerts.push(type: 'danger', msg: I18n.t.pages.crud.error)
 			errors = target.errors or {}
-			render()
-
-	def mountDatePickers
-		for own field, el of date_pickers
-			continue if flatpickers[field]
-			flatpickers[field] = Flatpickr(el, {
-				enableTime: true,
-				altInput: true,
-				dateFormat: 'Z',
-				altFormat: 'd/m/Y - h:i K',
-				defaultDate: Date.new().toJSON()
-				parseDate: do |date| Date.new(date)
-			})
+		loading = false
+		render()
 
 	def selectOptions relation
 		for rec in relations[relation]
 			{option: rec.main_field, value: rec.id}
-
-	def unmount
-		flatpickers.map do $1.destroy()
 
 	def changeRelation e
 		target[e.target.name] = relations[e.target.name].find(do |rel| rel.id == e.detail)
@@ -72,6 +65,7 @@ export default tag Form
 
 	
 	<self>
+		console.log target
 		<header .content__title>
 			if target.id
 				<h1> " {I18n.t.pages.crud['edit']} {I18n.t.models[model.plural_name].human_name}"
@@ -79,7 +73,15 @@ export default tag Form
 				<h1> " {I18n.t.pages.crud['new']} {I18n.t.models[model.plural_name].human_name}"
 		<div .card .fadeIn>
 			<div .card-body>
-				<form>
+				<div .btn-group .card-submit>
+					<button .btn .btn-danger :click.close>
+						I18n.t.pages.crud.cancel
+					<button .btn .btn-primary :click.submit>
+						if target.id then I18n.t.pages.crud.save else I18n.t.pages.crud.add
+						if loading
+							' '
+							<i .zmdi .zmdi-spinner .zmdi-hc-spin>
+				<form[mt: 20px]>
 					if errors.length
 						<div .alert .alert-danger>
 							for own field, msgs of errors
@@ -104,9 +106,7 @@ export default tag Form
 											placeholder=I18n.t.select>
 
 									elif type == :date
-										date_pickers[field] = <input bind=target[field]
-											.form-control 
-											.form-control-lg>
+										<DatePicker value=target[field]>
 									elif type == :string
 										<input 
 											value=(target[field] or '') 
@@ -145,14 +145,6 @@ export default tag Form
 												error
 
 				<PermissionForm bind:permissions=target.permissions> if model.form.permissions
-
-			<div .card-footer>
-				<div .btn-group .card-submit>
-					<button type="button" .btn .btn-danger :click.close>
-						I18n.t.pages.crud.cancel
-					<button type="button" .btn .btn-primary :click.submit>
-						if target.id then I18n.t.pages.crud.save else I18n.t.pages.crud.add
-						if loading then <i .zmdi .zmdi-spinner .zmdi-hc-spin>
 
 	css .card-footer
 		height: 75px

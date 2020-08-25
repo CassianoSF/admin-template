@@ -14,7 +14,7 @@ class Synchronizer
 			STATE.alerts.push(type: 'warning', msg: I18n.t.offline)
 			imba.commit!
 
-		interal = setInterval(run.bind(this), 3 * 1000)
+		interal = setInterval(run.bind(this), 5 * 1000)
 		run()
 
 	def unschedule
