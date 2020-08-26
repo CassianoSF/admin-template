@@ -7,12 +7,13 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "dayjs": "^1.8.31",
+    "dayjs": "^1.8.34",
     "dexie": "^3.0.1",
     "dexie-relationships": "^1.2.11",
     "flatpickr": "3.1.5",
-    "imba": "^2.0.0-alpha.84",
+    "imba": "^2.0.0-alpha.89",
     "js-convert-case": "^4.0.1",
+    "tail.select": "^0.5.15",
     "uuid": "^8.3.0"
   },
   "devDependencies": {
@@ -40,9 +41,10 @@
       "dayjs",
       "dexie",
       "dexie-relationships",
-      "flatpickr",
       "uuid",
-      "js-convert-case"
+      "js-convert-case",
+      "flatpickr"
+
     ],
     "installOptions": {},
     "devOptions": {

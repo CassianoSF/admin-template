@@ -6,7 +6,7 @@ export default global class DB
 	static prop schema
 
 	static def init
-		database = new Dexie('my-db', {addons: [relationships]})
+		database = Dexie.new('my-db', {addons: [relationships]})
 		schema = {}
 		for own name, model of Model.models
 			let columns = Object.keys(model.fields).join(',')

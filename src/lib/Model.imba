@@ -144,11 +144,18 @@ export default global class Model
 			self[field] = val
 			if constructor.has_many[field]
 				for rec in val
+					console.log constructor
 					let model = Model.models[constructor.has_many[field]].class
 					model.new(rec).updateLocal()
 		updateLocal()
 
 	def delete
+		await Model.models.deleted.class.new({
+			model: plural_name, 
+			rec_id: self.id, 
+			updated_at: Date.new.toJSON(),
+			created_at: Date.new.toJSON()
+		}).create()
 		self.constructor.sync ? deleteLocal() : deleteRemote()
 
 	def deleteRemote

@@ -12,8 +12,9 @@ export default tag Index
 	prop reverse
 	prop open_filter = false
 
-	# def visit
-	# 	execQuery()
+	def commit
+		execQuery()
+		render()
 
 	def mount
 		pagination = {

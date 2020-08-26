@@ -27,7 +27,6 @@ class Synchronizer
 		let last_update = await Api.get('last-update')
 		last_update = Date.new(last_update.data).toJSON()
 		let last_sync = window.sessionStorage.getItem('last_sync')
-		return if last_sync and last_update <= last_sync
 
 		for own name, model of models
 			let records = []
@@ -37,6 +36,7 @@ class Synchronizer
 				else
 					records = await model.table.toArray()
 
+			continue if records.length == 0 and last_sync and last_update <= last_sync
 			let res = await Api.post("sync-{model.plural_name}", {
 				last_sync: last_sync
 				to_sync: records
@@ -46,6 +46,7 @@ class Synchronizer
 
 			model.table.bulkPut(res.data.records)
 			syncTable(model, 1)
+		imba.commit!
 		window.sessionStorage.setItem('last_sync', Date.new.toJSON())
 
 	def syncTable model, current_page
@@ -54,8 +55,13 @@ class Synchronizer
 			limit: 100
 			offset: 100 * current_page
 		})
+		syncDeleted(res.data.records) if model.plural_name is 'deleteds'
 		model.table.bulkPut(res.data.records).then(do imba.commit!)
 		return if current_page * 100 > res.data.total
 		syncTable(model, current_page + 1)
+
+	def syncDeleted deleteds
+		for deleted in deleteds
+			Model.models[deleted.model].class.table.where(id: deleted.id).delete()
 
 export const Sync = Synchronizer.new

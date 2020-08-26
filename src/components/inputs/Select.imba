@@ -1,79 +1,175 @@
-import {v4} from 'uuid'
-
 export default tag Select
-	prop id = v4()
+	prop options
+	prop active
 	prop search
-	prop options = []
-	prop placeholder = 'Select'
-	prop value
+	prop placeholder
+	prop search_value
+	prop searched_options
+	prop customSearch
+	prop onScroll
+	prop loading
 
 	def mount
-		rect = self.getBoundingClientRect()
-		click_handler = handleClick.bind(this)
-		resize_handler = handleResize.bind(this)
-		scroll_handler = scrollHandler.bind(this)
-		window.addEventListener('resize', resize_handler)
-		window.addEventListener('scroll', scroll_handler)
-		render()
+		searched_options = options
 
-	def clickDropdown element
-		return true if (element.id == id) 
-		element.parentNode and clickDropdown(element.parentNode)
-
-	def scrollHandler e
-		render()
-
-	def handleClick e
-		unless clickDropdown(e.target)
-			toggle()
-
-	def handleResize
-		rect = self.getBoundingClientRect()
-		render()
+	def open
+		active = true
+		$search-input.focus()
 
 	def toggle
-		dropdown = !dropdown
-		if dropdown
-			document.addEventListener('pointerdown', click_handler, false)
-		else
-			document.removeEventListener('pointerdown', click_handler, false)
+		active = !active
 
-	def selectOption opt
-		value = opt.value
-		emit('change', value)
+	def select op
+		data = op.value
 		toggle()
 
-	def dropdownStyle
-		let y = rect.height + rect.top - window.scrollY
-		let x = rect.left - window.scrollX
-		"z-index: 100; position: fixed; top: calc({y}px + 0.9em); left: {x}px;"
+	def selected
+		for op in options
+			return op.text if op.value == data
+		return null
+
+	def onSearch
+		return customSearch(search_value, self) if customSearch
+		let text = search_value.normalize('NFD')
+
+		if !text
+			searched_options = options 
+			return
+
+		let regex = ''
+		for letter in text
+			regex = regex.concat(".*?{letter}")
+		regex = RegExp.new(regex, 'i')
+
+		searched_options = []
+
+		for op in options
+			let result = op.text.normalize('NFD').match(regex)
+			searched_options.push(op) if result
+
+	def customOnScroll e
+		onScroll(e, self) if onScroll
 
 	<self>
-		<span @click.toggle .select2.select2-container.select2-container--default dir="ltr" style="width: 100%;">
-			<span.selection>
-				<span.select2-selection.select2-selection--single tabindex="0">
-					<span.select2-selection__rendered title="Subaru"> (options.find(do $1.value == value) or {}).option or placeholder
-					<span.select2-selection__arrow role="presentation">
-						<b role="presentation">
-			<span.dropdown-wrapper aria-hidden="true">
-		if dropdown
-			<span #{id} .select2-container.select2-container--default.select2-container--open style=dropdownStyle()>
-				<span.select2-dropdown.select2-dropdown--below dir="ltr" style="width: auto; min-width: {rect.width}px; position: relative;">
+		<div .select-box>
+			<div[w: inherit]>
+				<div .dropdown .active=(active)>
 					if search
-						<span.select2-search.select2-search--dropdown>
-							<input.select2-search__field type="search" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="textbox">
+						<div .search>
+							<i .search-icon .zmdi .zmdi-search>
+							<input$search-input bind=search_value :keyup.onSearch>
+					<div .options-container :scroll.customOnScroll>
+						for op in searched_options
+							<div .option :click.select(op)>
+								op.text
+								<i [float: right right: 20px] .zmdi .zmdi-check> if data == op.value
+						if loading
+							<div .option [ta: center]>
+								<i .zmdi .zmdi-spinner .zmdi-hc-spin>
 
+				<div .selected :click.toggle>
+					selected() or placeholder or 'Select'
+					<i .arrow .up=(active) .zmdi .zmdi-chevron-down>
 
-					if options.length
-						<span.select2-results>
-							<ul.select2-results__options role="tree" aria-expanded="true" aria-hidden="false">
-								for opt in options
-									<li :click.selectOption(opt)
-										.select2-results__option
-										.select2-results__option--highlighted=(opt.value == value) 
-										aria-selected=(opt.value == value) 
-										role="treeitem"> opt.option
-					else
-						<span.select2-results>
-							<ul.select2-results__options role="tree" aria-expanded="true" aria-hidden="false">
-								<li role="treeitem" [ta: center]> 'Empty'
+	css .search-icon
+		color: rgba(255,255,255,0.8) 
+		fs: 20px 
+		px: 18px 
+		py: 15px
+
+	css .options-container
+		max-height: 175px 
+		overflow-y: scroll
+
+	css .search
+		border-bottom: 1px solid rgba(255,255,255,0.2)
+
+	css $search-input
+		height: 55px
+		background-color: black
+		color: white
+		font-size: 15px
+		transform: translate(0,-2px)
+		border-bottom: none
+
+	css .select-box 
+		display: flex
+		width: 100%
+		flex-direction: column
+
+	css .select-box .dropdown
+		position: absolute
+		transform: translate(0, 38px)
+		background: black
+		color: white
+		max-height: 0
+		width: inherit
+		opacity: 0
+		transition: all 0.2s
+		border-radius: 1px
+		overflow: hidden
+		order: 1
+		z-index: 100
+
+	css .selected 
+		background: rgba(0,0,0,0)
+		border-radius: 1px
+		border-bottom: 1px solid rgba(255,255,255,0.2)
+		color: white
+		position: relative
+		order: 0
+
+	css .selected@after 
+		content: ""
+		position: absolute
+		height: 100%
+		width: 32px
+		right: 10px
+		top: 5px
+		transition: all 0.2s
+
+	css .select-box .dropdown.active 
+		max-height: 240px
+		opacity: 1
+
+	css .select-box .dropdown.active + .selected@after 
+		transform: rotateX(180deg)
+		top: -6px
+
+	css .select-box .dropdown@-webkit-scrollbar 
+		width: 8px
+		background: #0d141f
+		border-radius: 0 8px 8px 0
+
+	css .select-box .dropdown@-webkit-scrollbar-thumb 
+		background: rgba(255,255,255,0.1)
+		border-radius: 0 8px 8px 0
+
+	css .selected 
+		padding: 8px 2px
+		font-size: 15px
+		cursor: pointer
+
+	css .select-box .option
+		padding: 8px 24px
+		font-size: 15px
+		cursor: pointer
+
+	css .arrow
+		float: right
+		margin-right: 10px
+		font-size: 25px
+		transition: all 0.2s
+
+	css .up
+		transform: scaleY(-1)
+
+	css .select-box .option@hover 
+		background: rgba(255,255,255,0.1)
+
+	css .select-box label
+		cursor: pointer
+
+	css .select-box .option .radio 
+		display: none
+

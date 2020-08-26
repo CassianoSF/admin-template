@@ -57,7 +57,7 @@ Recebimento.setup({
 		sujo_descartado:          :integer
 
 	validates:
-		presense: [
+		presence: [
 			'lote'
 			'data_postura'
 			'data_entrada'
