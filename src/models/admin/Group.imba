@@ -1,5 +1,8 @@
 export global class Group < Model
 
+	get main_field
+		name
+
 Group.setup({
 	plural_name: :groups
 	singular_name: :group

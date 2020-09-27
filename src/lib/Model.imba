@@ -3,8 +3,8 @@ import {Sync} from './Sync'
 
 export default global class Model
 	static def setup configs = {}
-		throw 'setup must have plural_name' unless configs.plural_name
-		throw 'setup must have singular_name' unless configs.singular_name
+		throw Error.new('setup must have a plural_name') unless configs.plural_name
+		throw Error.new('setup must have a singular_name') unless configs.singular_name
 		Model.models ||= {}
 		Model.models[configs.singular_name] ||= {}
 		Model.models[configs.singular_name].class = self
@@ -109,12 +109,12 @@ export default global class Model
 
 	def createLocal
 		self.id ||= v4()
-		self.created_at ||= Date.new().toJSON()
+		self.created_at ||= Date.new.toJSON()
 		DB[constructor.plural_name].put(fields)
 		return true
 
 	def updateLocal
-		self.updated_at ||= Date.new().toJSON()
+		self.updated_at ||= Date.new.toJSON()
 		DB[constructor.plural_name].put(fields)
 		return true
 

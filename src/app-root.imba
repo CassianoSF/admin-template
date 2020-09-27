@@ -29,7 +29,8 @@ import {Recebimento}   from './models/processos/Recebimento'
 import {Transferencia} from './models/processos/Transferencia'
 
 import {Pacote}        from './models/Pacote'
-import {Deleted}        from './models/Deleted'
+import {Deleted}       from './models/Deleted'
+import {Audit}         from './models/Audit'
 
 # PAGES
 import Login           from './views/Login'

@@ -3,7 +3,8 @@
     "dev": "npx snowpack dev",
     "build": "npx snowpack build",
     "test": "imba cypress/run-test.imba",
-    "start": "imba cypress/open-test.imba"
+    "start": "imba cypress/open-test.imba",
+    "unit": "jest"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -18,7 +19,8 @@
   },
   "devDependencies": {
     "cypress": "^4.12.1",
-    "imba-snowpack": "^0.0.8"
+    "imba-snowpack": "^0.0.8",
+    "jest": "^26.4.2"
   },
   "snowpack": {
     "mount": {
@@ -44,7 +46,6 @@
       "uuid",
       "js-convert-case",
       "flatpickr"
-
     ],
     "installOptions": {},
     "devOptions": {

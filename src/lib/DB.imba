@@ -16,7 +16,7 @@ export default global class DB
 
 			schema[model.plural_name] = columns
 		
-		database.version(1).stores(schema)
+		database.version(3).stores(schema)
 
 
 		for own name, model of Model.models

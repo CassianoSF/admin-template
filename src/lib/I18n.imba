@@ -176,7 +176,33 @@ export default global class I18n
 					nascedouro: 'Nascedouro'
 					vacina_1: 'Vacina 1'
 					vacina_2: 'Vacina 2'
-
+			audits:
+				human_name: 'Atividade'
+				plural_name: 'Atividades'
+				fields:
+					auditable_id: 'auditable_id'
+					auditable_type: 'auditable_type'
+					associated_id: 'associated_id'
+					associated_type: 'associated_type'
+					user_id: 'user_id'
+					user_type: 'user_type'
+					username: 'username'
+					action: 'action'
+					audited_changes: 'audited_changes'
+					version: 'version'
+					comment: 'comment'
+					remote_address: 'remote_address'
+					request_uuid: 'request_uuid'
+					created_at: 'created_at'
+					updated_at: 'updated_at'
+			deleteds:
+				human_name: 'Deleted'
+				plural_name: 'Deleteds'
+				fields:
+					created_at: 'created_at'
+					updated_at: 'updated_at'
+					model: 'model'
+					rec_id: 'rec_id'
 
 	}
 
